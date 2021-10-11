@@ -14,9 +14,4 @@
 </template>
 
 <style lang="less" scoped>
-.container {
-  width: 1200px;
-  min-height: 500px;
-  margin: 0 auto;
-}
 </style>

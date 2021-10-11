@@ -1,4 +1,4 @@
-<template>notfound</template>
+<template>404</template>
 
 <script >
 export default {};
