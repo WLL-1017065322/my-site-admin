@@ -13,9 +13,16 @@ const router = createRouter({
     routes: [{
             path: '/',
             name: 'Home',
-            component: Home
+            component: Home,
+            children: [
+                { path: 'blog', name: 'About', component: About },
+                { path: 'about', name: 'About', component: About },
+                { path: 'about', name: 'About', component: About },
+                { path: 'about', name: 'About', component: About },
+                { path: 'about', name: 'About', component: About },
+                { path: 'about', name: 'About', component: About },
+            ]
         },
-        { path: '/about', name: 'About', component: About },
         { path: '/:pathMatch(.*)*', name: 'not-found', component: NotFound },
     ]
 })

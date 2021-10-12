@@ -20,43 +20,52 @@
             <span>个人信息</span>
           </a-menu-item>
         </router-link>
-        <router-link to="/blog">
-          <a-sub-menu key="sub1">
-            <template #title>
-              <span>
-                <user-outlined />
-                <span>博客</span>
-              </span>
-            </template>
+
+        <a-sub-menu key="sub1">
+          <template #title>
+            <span>
+              <user-outlined />
+              <span>博客</span>
+            </span>
+          </template>
+          <router-link to="/blog/lists">
             <a-menu-item key="3">列表</a-menu-item>
+          </router-link>
+          <router-link to="/blog/detail">
             <a-menu-item key="4">正文</a-menu-item>
-            <a-menu-item key="5">标签</a-menu-item>
-          </a-sub-menu>
-        </router-link>
-        <router-link to="/myinfo">
-          <a-sub-menu key="sub2">
-            <template #title>
-              <span>
-                <team-outlined />
-                <span>评论</span>
-              </span>
-            </template>
+          </router-link>
+          <router-link to="/blog/tags"
+            ><a-menu-item key="5">标签</a-menu-item>
+          </router-link>
+        </a-sub-menu>
+        <a-sub-menu key="sub2">
+          <template #title>
+            <span>
+              <team-outlined />
+              <span>评论</span>
+            </span>
+          </template>
+          <router-link to="/comments/comment">
             <a-menu-item key="6">评论</a-menu-item>
+          </router-link>
+          <router-link to="/comments/leavemessage">
             <a-menu-item key="8">留言</a-menu-item>
-          </a-sub-menu>
-        </router-link>
-        <router-link to="/roles">
-          <a-sub-menu key="sub3">
-            <template #title>
-              <span>
-                <team-outlined />
-                <span>角色管理</span>
-              </span>
-            </template>
+          </router-link>
+        </a-sub-menu>
+        <a-sub-menu key="sub3">
+          <template #title>
+            <span>
+              <team-outlined />
+              <span>角色管理</span>
+            </span>
+          </template>
+          <router-link to="/roles/users">
             <a-menu-item key="6">用户管理</a-menu-item>
+          </router-link>
+          <router-link to="/roles/auth">
             <a-menu-item key="8">权限管理</a-menu-item>
-          </a-sub-menu>
-        </router-link>
+          </router-link>
+        </a-sub-menu>
         <router-link to="/myinfo"></router-link>
 
         <a-menu-item key="9">
@@ -75,11 +84,14 @@
           <a-breadcrumb-item>User</a-breadcrumb-item>
           <a-breadcrumb-item>Bill</a-breadcrumb-item>
         </a-breadcrumb>
-        <div
+        <div>
+          <router-view></router-view>
+        </div>
+        <!-- <div
           :style="{ padding: '24px', background: '#fff', minHeight: '360px' }"
         >
           Bill is a cat.
-        </div>
+        </div> -->
       </a-layout-content>
       <a-layout-footer style="text-align: center">
         Ant Design ©2018 Created by Ant UED

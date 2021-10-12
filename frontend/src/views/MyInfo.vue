@@ -1,5 +1,5 @@
 <template>
-  about
+  myinfo
 </template>
 
 <script>
