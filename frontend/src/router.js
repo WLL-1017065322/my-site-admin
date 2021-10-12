@@ -1,30 +1,50 @@
 import { createRouter, createWebHistory } from "vue-router"
+
+import Index from './views/Index.vue'
+
 import Home from './views/Home.vue'
-// import Blog from './views/Blog/Blog.vue'
-// import BlogList from './views/Blog/List.vue'
-// import BlogDetail from './views/Blog/Detail.vue'
+import MyInfo from './views/MyInfo.vue'
+
+
+import BlogDetail from './views/Blog/Detail.vue'
+import BlogList from './views/Blog/List.vue'
+import BlogTags from './views/Blog/Tags.vue'
+
+import Comment from './views/Comments/Comment.vue'
+import LeaveMessage from './views/Comments/LeaveMessage.vue'
+
+import Users from './views/Roles/Users.vue'
+import Auth from './views/Roles/Auth.vue'
+
+
 import NotFound from './views/NotFound.vue'
-import About from './views/About.vue'
 
 
 
 const router = createRouter({
     history: createWebHistory(), // hash模式：createWebHashHistory，history模式：createWebHistory
     routes: [{
-            path: '/',
-            name: 'Home',
-            component: Home,
-            children: [
-                { path: 'blog', name: 'About', component: About },
-                { path: 'about', name: 'About', component: About },
-                { path: 'about', name: 'About', component: About },
-                { path: 'about', name: 'About', component: About },
-                { path: 'about', name: 'About', component: About },
-                { path: 'about', name: 'About', component: About },
-            ]
-        },
-        { path: '/:pathMatch(.*)*', name: 'not-found', component: NotFound },
-    ]
+        path: '/',
+        name: 'Index',
+        component: Index,
+        children: [
+            { path: 'home', name: 'Home', component: Home },
+            { path: 'myinfo', name: 'MyInfo', component: MyInfo },
+
+            { path: 'blog/list', name: 'BlogList', component: BlogList },
+            { path: 'blog/detail', name: 'BlogDetail', component: BlogDetail },
+            { path: 'blog/tags', name: 'BlogTags', component: BlogTags },
+
+            { path: 'comments/comment', name: 'Comment', component: Comment },
+            { path: 'comments/leavemessage', name: 'LeaveMessage', component: LeaveMessage },
+
+            { path: 'roles/users', name: 'Users', component: Users },
+            { path: 'roles/auth', name: 'Auth', component: Auth },
+
+            { path: '/:pathMatch(.*)*', name: 'not-found', component: NotFound },
+
+        ]
+    }, ]
 })
 
 // router.beforeEach((to, from, next) => {
