@@ -11,6 +11,7 @@ export class ArticlesController {
 
     @Get()
     index() {
+        console.log(111);
         return this.articlesService.articlesInfo()
     }
     // @Get('setredis')

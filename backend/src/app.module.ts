@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { StudentsModule } from './modules/students/students.module';
+import { ArticlesModule } from './modules/articles/articles.module';
 import { MongooseModule } from "@nestjs/mongoose";
 // import { CommonRedisModule } from './common/commonRedis.module';
 import { RedisModule } from 'nestjs-redis';
@@ -14,8 +15,8 @@ let redisOption = {
 }
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://127.0.0.1:27017/students', { useNewUrlParser: true }), StudentsModule,
-    RedisModule.register(redisOption)
+    MongooseModule.forRoot('mongodb://127.0.0.1:27017/students', { useNewUrlParser: true }), StudentsModule, ArticlesModule
+    // RedisModule.register(redisOption)
     // CommonRedisModule,
     // RedisModule.forRootAsync({
     //   imports: [ConfigModule],
