@@ -2,13 +2,13 @@
  * 请求拦截、相应拦截、错误统一处理
  */
 import axios from 'axios';
-import QS from 'qs';
+// import QS from 'qs';
 // import { Toast } from 'vant';
 // import store from '../store/index'
 
 // 环境的切换
 if (process.env.NODE_ENV == 'development') {
-    axios.defaults.baseURL = '/';
+    axios.defaults.baseURL = '/api';
 } else if (process.env.NODE_ENV == 'debug') {
     axios.defaults.baseURL = '';
 } else if (process.env.NODE_ENV == 'production') {
@@ -124,7 +124,8 @@ export function get(url, params) {
  */
 export function post(url, params) {
     return new Promise((resolve, reject) => {
-        axios.post(url, QS.stringify(params))
+        axios.post(url, params)
+            // axios.post(url, QS.stringify(params))
             .then(res => {
                 resolve(res.data);
             })

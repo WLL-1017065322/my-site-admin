@@ -1,4 +1,6 @@
-import {get, post } from 'request'
+import {get, post } from '../utils/request'
 
 
-const queryBlogList = get('')
+const queryBlogList = () => get('/articles')
+
+export { queryBlogList }

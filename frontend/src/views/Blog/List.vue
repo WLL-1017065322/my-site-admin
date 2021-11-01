@@ -18,6 +18,7 @@
   </div>
   <div class="content">
     <a-table
+      :rowKey="(record) => record.title"
       class="ant-table-striped"
       size="middle"
       :columns="columns"
@@ -36,11 +37,21 @@
   </div>
 </template>
 <script lang="ts">
-import { reactive, onMounted, computed, toRefs, UnwrapRef } from "vue";
+import {
+  reactive,
+  onMounted,
+  computed,
+  toRefs,
+  UnwrapRef,
+  isReactive,
+  ref,
+} from "vue";
 import { useRouter } from "vue-router";
-// import { useStore } from 'vuex'
 
+import { queryBlogList } from "../../api/index.js";
+// import { useStore } from 'vuex'
 const columns = [
+  { title: "title", dataIndex: "title" },
   { title: "Name", dataIndex: "name" },
   { title: "Age", dataIndex: "age" },
   { title: "Address", dataIndex: "address" },
@@ -50,35 +61,38 @@ const columns = [
     slots: { customRender: "operation" },
   },
 ];
-const data = [
-  {
-    key: "1",
-    name: "John Brown",
-    age: 32,
-    address: "New York No. 1 Lake Park",
-  },
-  {
-    key: "2",
-    name: "Jim Green",
-    age: 42,
-    address: "London No. 1 Lake Park",
-  },
-  {
-    key: "3",
-    name: "Joe Black",
-    age: 32,
-    address: "Sidney No. 1 Lake Park",
-  },
-  {
-    key: "4",
-    name: "Ben Kang",
-    age: 15,
-    address: "Sidney No. 1 Lake Park",
-  },
-];
+// const data = [
+//   {
+//     key: "1",
+//     name: "John Brown",
+//     age: 32,
+//     address: "New York No. 1 Lake Park",
+//   },
+//   {
+//     key: "2",
+//     name: "Jim Green",
+//     age: 42,
+//     address: "London No. 1 Lake Park",
+//   },
+//   {
+//     key: "3",
+//     name: "Joe Black",
+//     age: 32,
+//     address: "Sidney No. 1 Lake Park",
+//   },
+//   {
+//     key: "4",
+//     name: "Ben Kang",
+//     age: 15,
+//     address: "Sidney No. 1 Lake Park",
+//   },
+// ];
 interface FormState {
   fieldA: string;
   fieldB: string;
+}
+interface Test {
+  data: string[];
 }
 export default {
   components: {},
@@ -89,13 +103,27 @@ export default {
       fieldA: "",
       fieldB: "",
     });
+    // const data= reactive<Test>({data:[]})
     const modify = () => {
-      console.log(11);
       router.push("/blog/detail");
     };
 
+    const obj = reactive({
+      data:[]
+    })
+      onMounted(async () => {
+      let resp = await queryBlogList();
+      obj.data = [...resp];
+    });
+    // let data = ref([]);
+    // // let data = ref([]);
+    // onMounted(async () => {
+    //   let resp = await queryBlogList();
+    //   data.value = [...resp];
+    // });
+
     return {
-      data,
+      ...toRefs(obj),
       columns,
       formState,
       modify,
