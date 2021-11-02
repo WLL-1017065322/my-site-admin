@@ -1,4 +1,5 @@
 import { Controller, Get, } from "@nestjs/common";
+import { ApiTags } from "@nestjs/swagger";
 import { StudentsService } from "./students.service";
 // import { CommonRedisService } from "src/common/commonRedis.service";
 
@@ -10,6 +11,7 @@ export class StudentsController {
     }
 
     @Get()
+    @ApiTags('students')
     index() {
         return this.studentsService.studentsInfo()
     }

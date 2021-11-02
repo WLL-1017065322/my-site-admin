@@ -7,6 +7,8 @@ import { MongooseModule } from "@nestjs/mongoose";
 // import { CommonRedisModule } from './common/commonRedis.module';
 import { RedisModule } from 'nestjs-redis';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { DbModule } from './db/db.module';
+import { Log4jsModule } from "@nestx-log4js/core";
 let redisOption = {
   port: 6379,
   host: '127.0.0.1',
@@ -15,7 +17,10 @@ let redisOption = {
 }
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://127.0.0.1:27017/students', { useNewUrlParser: true }), StudentsModule, ArticlesModule
+    StudentsModule,
+    ArticlesModule,
+    DbModule,
+    Log4jsModule.forRoot()
     // RedisModule.register(redisOption)
     // CommonRedisModule,
     // RedisModule.forRootAsync({
@@ -25,7 +30,7 @@ let redisOption = {
     // }),
   ],
 
-  // controllers: [AppController],
-  // providers: [AppService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule { }

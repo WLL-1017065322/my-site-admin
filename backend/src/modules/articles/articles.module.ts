@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
 import { MongooseModule } from "@nestjs/mongoose";
-import { ArticlesSchema } from "src/schema/articles.schema";
+import { ArticlesSchema } from "src/db/schema/articles.schema";
 import { ArticlesService } from "./articles.service";
 import { ArticlesController } from "./articles.controller";
 
@@ -9,12 +9,12 @@ import { ArticlesController } from "./articles.controller";
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{
-      name: 'Articles', // 需要个schema名称对应
-      schema: ArticlesSchema, // 引入的schema
-      collection: 'articles' // 数据库名称
-    }
-    ]),
+    // MongooseModule.forFeature([{
+    //   name: 'Articles', // 需要个schema名称对应
+    //   schema: ArticlesSchema, // 引入的schema
+    //   collection: 'articles' // 数据库名称
+    // }
+    // ]),
     // redis注册
   ],
   controllers: [ArticlesController],
