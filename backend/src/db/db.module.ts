@@ -2,6 +2,8 @@ import { Global, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ArticlesSchema } from './schema/articles.schema';
 import { StudentsSchema } from './schema/students.schema';
+import { UserSchema } from './schema/user.schema';
+
 const MONGO_MODELS = MongooseModule.forFeature([
     {
         name: 'Articles', // 需要个schema名称对应
@@ -12,6 +14,11 @@ const MONGO_MODELS = MongooseModule.forFeature([
         name: 'Students', // 需要个schema名称对应
         schema: StudentsSchema, // 引入的schema
         collection: 'students' // 数据库名称
+    },
+    {
+        name: 'User', // 需要个schema名称对应
+        schema: UserSchema, // 引入的schema
+        collection: 'user' // 数据库名称
     }
 ])
 @Global()

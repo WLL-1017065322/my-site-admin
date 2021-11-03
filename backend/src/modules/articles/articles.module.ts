@@ -1,8 +1,10 @@
-import { Module } from "@nestjs/common";
+import { MiddlewareConsumer, Module, NestModule } from "@nestjs/common";
 import { MongooseModule } from "@nestjs/mongoose";
 import { ArticlesSchema } from "src/db/schema/articles.schema";
 import { ArticlesService } from "./articles.service";
 import { ArticlesController } from "./articles.controller";
+import { HelloMiddleware } from "src/middlewares/hello.middleware";
+import { HashPasswordMiddleware } from "src/middlewares/hash-password.middleware";
 
 
 // 在使用的控制器对应的Module中配置Model
@@ -20,4 +22,8 @@ import { ArticlesController } from "./articles.controller";
   controllers: [ArticlesController],
   providers: [ArticlesService]
 })
-export class ArticlesModule { }
+export class ArticlesModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(HashPasswordMiddleware).forRoutes('articles')
+  }
+}

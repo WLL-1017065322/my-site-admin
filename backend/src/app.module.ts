@@ -9,6 +9,7 @@ import { RedisModule } from 'nestjs-redis';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { DbModule } from './db/db.module';
 import { Log4jsModule } from "@nestx-log4js/core";
+import { UserModule } from './modules/user/user.module';
 let redisOption = {
   port: 6379,
   host: '127.0.0.1',
@@ -19,6 +20,7 @@ let redisOption = {
   imports: [
     StudentsModule,
     ArticlesModule,
+    UserModule,
     DbModule,
     Log4jsModule.forRoot()
     // RedisModule.register(redisOption)

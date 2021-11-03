@@ -26,4 +26,10 @@ export class Articles extends Document {
     readonly pageView: String;
     readonly image: String;
     readonly comment: String;
+    @Prop()
+    @ApiProperty({
+        description: "密码",
+        example: '111'
+    })
+    readonly password: String;
 }

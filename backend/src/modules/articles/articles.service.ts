@@ -1,8 +1,8 @@
 /*
  * @Author: along
  * @Date: 2021-11-02 00:12:55 
- * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-11-02 00:40:44
+ * @Last Modified by: along
+ * @Last Modified time: 2021-11-03 00:14:01
  */
 
 import { Injectable } from "@nestjs/common";
@@ -33,7 +33,7 @@ export class ArticlesService {
                     content: article.content
                 }
             );
-            console.log('res',res)
+            // console.log('res',res)
             if (res&&res.length > 0) {
                 console.log('已注册');
                 throw Error("用户已注册")

@@ -124,3 +124,29 @@ import { Log4jsModule } from "@nestx-log4js/core";
 main.ts
 app.useLogger(app.get(Log4jsLogger))
 ```
+
+========================
+中间件
+nest g mi hello
+
+```js
+// hello.middleware.ts
+import { Injectable, NestMiddleware } from '@nestjs/common';
+
+@Injectable()
+export class HelloMiddleware implements NestMiddleware {
+  use(req: Request, res: Response, next: NestFunction) {
+    console.log('req.body',req.body);
+    next();
+  }
+}
+
+// articles.module.ts
+export class ArticlesModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(HelloMiddleware).forRoutes('article')
+  }
+}
+
+```
+yarn add crypto
