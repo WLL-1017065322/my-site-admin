@@ -20,8 +20,5 @@ import { AuthGuard } from "src/guards/auth.guard";
   ]
 })
 
-export class UserModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(HashPasswordMiddleware).forRoutes('user/register')
-  }
+export class UserModule {
 }

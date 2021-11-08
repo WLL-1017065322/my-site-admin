@@ -28,4 +28,10 @@ export class User extends Document {
         example: 'salt'
     })
     readonly salt?: string;
+    @Prop()
+    @ApiProperty({
+        description: "手机号",
+        example: '1361111'
+    })
+    readonly phone: string;
 }

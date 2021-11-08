@@ -150,3 +150,45 @@ export class ArticlesModule implements NestModule {
 
 ```
 yarn add crypto
+
+```js
+util/encription.ts
+import * as crypto from "crypto"
+
+export function addSalt() {
+    return crypto.randomBytes(3).toString("base64")
+}
+export function encript(userPassword: string, salt: string): string {
+    return crypto.pbkdf2Sync(userPassword, salt, 10000, 16, 'sha256').toString('base64')
+}
+
+/middlewares/hash-password.middleware.ts
+import { Injectable, NestMiddleware } from '@nestjs/common';
+import { NextFunction } from 'express'
+import { addSalt, encript } from 'src/utils/encription';
+@Injectable()
+export class HashPasswordMiddleware implements NestMiddleware {
+  use(req: Request, res: Response, next: NextFunction) {
+    let userPassword = req.body['password'];
+    if (userPassword) {
+      const salt = addSalt()
+      userPassword = encript(userPassword, salt)
+      req.body['password'] = userPassword
+      req.body['salt'] = salt
+      // console.log('req.body',req.body);
+    }
+    next();
+  }
+}
+
+```
+
+===================================================
+nest g mo auth
+nest g service auth
+nest g co auth
+
+```js
+
+
+```

@@ -18,6 +18,9 @@ async function bootstrap() {
     .setTitle('项目管理平台')
     .setDescription('项目管理平台的api管理文档')
     .setVersion('1.0')
+    .addBearerAuth({
+      type: 'http', scheme: 'bearer', bearerFormat: 'JWT'
+    }, 'jwt')
     // .addTag('cats')
     .build();
   const document = SwaggerModule.createDocument(app, options);
