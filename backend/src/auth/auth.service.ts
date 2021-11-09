@@ -103,6 +103,25 @@ export class AuthService {
             })
     }
 
+    public async alter(user: User) {
+        // return this.userService.findOneByPhone(user.phone).then(async () => {
+        //         return await this.userModel.findOneAndUpdate({ phone: user.phone }, user, {}, () => {
+        //             logger.log(`用户${user.phone}修改密码成功`)
+        //         }).then(() => {
+        //             return (this.response = { code: 0, msg: '用户修改成功' })
+        //         })
+        //     })
+        const resp = await this.userService.findOneByPhone(user.phone)
+        if (resp.length > 0) {
+            const _resp = await this.userModel.findOneAndUpdate({ phone: user.phone }, user)
+            if (_resp) {
+                logger.log(`用户${user.phone}修改密码成功`)
+                return (this.response = { code: 0, msg: '用户修改成功' })
+            }
+        }
+        return (this.response = { code: 1, msg: '用户修改失败' })
+    }
+
 
     private async createToken(user: User) {
         return await this.jwtService.sign(user)
