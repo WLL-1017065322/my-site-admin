@@ -3,16 +3,16 @@
     <a-form :model="formState">
       <a-row>
         <a-col :span="6">
-          <a-form-item label="Field A">
+          <a-form-item label="id">
             <a-input
-              v-model:value="formState.fieldA"
+              v-model:value="formState._id"
               placeholder="input placeholder"
             />
           </a-form-item>
         </a-col>
       </a-row>
       <div class="search">
-        <a-button>搜索</a-button>
+        <a-button @click="search">搜索</a-button>
       </div>
     </a-form>
   </div>
@@ -45,19 +45,26 @@ import {
   UnwrapRef,
   isReactive,
   ref,
+  defineComponent,
 } from "vue";
 import { useRouter } from "vue-router";
 
-import { queryBlogList } from "../../api/index.js";
+import {
+  queryBlogList,
+  queryBlogDetail,
+  delBlog,
+  modifyBlog,
+  addBlog,
+} from "../../api/index.js";
+import { message } from 'ant-design-vue';
 // import { useStore } from 'vuex'
 const columns = [
-  { title: "title", dataIndex: "title" },
-  { title: "Name", dataIndex: "name" },
-  { title: "Age", dataIndex: "age" },
-  { title: "Address", dataIndex: "address" },
+  { title: "_id", dataIndex: "_id" },
+  { title: "标题", dataIndex: "title" },
+  { title: "标签", dataIndex: "tags" },
+  { title: "作者", dataIndex: "author" },
   {
-    title: "operation",
-    dataIndex: "address",
+    title: "操作",
     slots: { customRender: "operation" },
   },
 ];
@@ -88,20 +95,18 @@ const columns = [
 //   },
 // ];
 interface FormState {
-  fieldA: string;
-  fieldB: string;
+  _id: string;
 }
 interface Test {
   data: string[];
 }
-export default {
+export default defineComponent({
   components: {},
   setup() {
     const router = useRouter();
     // const store = useStore();
     const formState: UnwrapRef<FormState> = reactive({
-      fieldA: "",
-      fieldB: "",
+      _id: null,
     });
     // const data= reactive<Test>({data:[]})
     const modify = () => {
@@ -109,27 +114,38 @@ export default {
     };
 
     const obj = reactive({
-      data:[]
-    })
-      onMounted(async () => {
-      let resp = await queryBlogList();
-      obj.data = [...resp];
+      data: [],
     });
+    const search = async () => {
+      message.success('This is a normal message');
+    console.log('formState',toRefs(formState));
+      const resp = await queryBlogList({...formState});
+      const { code, errMsg = '', data = [] } = resp;
+      console.log("resp", resp);
+      if (code === 0) {
+        obj.data = [].concat(data);
+      } else {
+        message.warn(errMsg);
+        console.log(message);
+      }
+    };
+
     // let data = ref([]);
     // // let data = ref([]);
     // onMounted(async () => {
     //   let resp = await queryBlogList();
     //   data.value = [...resp];
     // });
-
+    console.log(obj);
     return {
       ...toRefs(obj),
       columns,
       formState,
       modify,
+      search,
     };
   },
-};
+});
 </script>
 <style lang="less" scoped>
 </style>

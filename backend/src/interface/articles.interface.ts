@@ -7,17 +7,25 @@ export class Articles extends Document {
     @Prop()
     @ApiProperty({
         description: "内容",
-        example: '11111'
+        example: '11111',
+        required: false,
     })
     readonly content: String;
     @Prop()
     @ApiProperty({
         description: "标题",
-        example: '2222'
+        example: '2222',
+        required: false,
     })
     readonly title: String;
     readonly subhead: String;
     readonly tags: String;
+    @Prop()
+    @ApiProperty({
+        description: "作者",
+        example: 'along',
+        required: false,
+    })
     readonly author: String;
     readonly date: String;
     readonly time: String;
@@ -26,10 +34,4 @@ export class Articles extends Document {
     readonly pageView: String;
     readonly image: String;
     readonly comment: String;
-    @Prop()
-    @ApiProperty({
-        description: "密码",
-        example: '111'
-    })
-    readonly password: String;
 }
