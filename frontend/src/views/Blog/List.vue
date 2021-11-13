@@ -6,7 +6,6 @@
           <a-form-item label="id">
             <a-input
               v-model:value="formState._id"
-              placeholder="input placeholder"
             />
           </a-form-item>
         </a-col>
@@ -29,7 +28,7 @@
     >
       <template #operation="{ record }">
         <a-button style="margin-right: 5px" @click="modify">修改</a-button>
-        <a-popconfirm title="Sure to delete?" @confirm="onDelete(record.key)">
+        <a-popconfirm title="Sure to delete?" @confirm="onDelete(record._id)">
           <a-button danger>删除</a-button>
         </a-popconfirm>
       </template>
@@ -96,6 +95,7 @@ const columns = [
 // ];
 interface FormState {
   _id: string;
+  title: string;
 }
 interface Test {
   data: string[];
@@ -107,21 +107,21 @@ export default defineComponent({
     // const store = useStore();
     const formState: UnwrapRef<FormState> = reactive({
       _id: null,
+      title: null
     });
     // const data= reactive<Test>({data:[]})
     const modify = () => {
       router.push("/blog/detail");
     };
 
+
     const obj = reactive({
       data: [],
     });
+
     const search = async () => {
-      message.success('This is a normal message');
-    console.log('formState',toRefs(formState));
       const resp = await queryBlogList({...formState});
       const { code, errMsg = '', data = [] } = resp;
-      console.log("resp", resp);
       if (code === 0) {
         obj.data = [].concat(data);
       } else {
@@ -129,7 +129,18 @@ export default defineComponent({
         console.log(message);
       }
     };
-
+    
+    const onDelete = async (_id) =>{
+      const resp = await delBlog({_id});
+      const { code, errMsg = '', data = [] } = resp;
+      if (code === 0) {
+        message.success('删除成功')
+        search()
+      } else {
+        message.warn(errMsg);
+        console.log(message);
+      }
+    }
     // let data = ref([]);
     // // let data = ref([]);
     // onMounted(async () => {
@@ -143,6 +154,7 @@ export default defineComponent({
       formState,
       modify,
       search,
+      onDelete,
     };
   },
 });

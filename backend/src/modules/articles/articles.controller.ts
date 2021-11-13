@@ -17,7 +17,7 @@ export class ArticlesController {
         summary: "获取文章列表"
     })
     getList(@Query() articleDto: Articles) {
-        console.log('articleDto',articleDto);
+        console.log('articleDto', articleDto);
         return this.articlesService.queryAll(articleDto)
     }
 
@@ -32,8 +32,8 @@ export class ArticlesController {
     @ApiOperation({
         summary: "删除文章"
     })
-    async delArticle(@Body() articleDto: Articles) {
-        return await this.articlesService.del(articleDto)
+    delArticles(@Body() articleDto: Articles) {
+        return this.articlesService.delArticle(articleDto)
         // return this.articlesService.articlesInfo()
     }
     @Post()

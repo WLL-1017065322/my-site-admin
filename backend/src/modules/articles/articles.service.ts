@@ -2,13 +2,15 @@
  * @Author: along
  * @Date: 2021-11-02 00:12:55 
  * @Last Modified by: along
- * @Last Modified time: 2021-11-11 00:08:11
+ * @Last Modified time: 2021-11-11 23:47:27
  */
 
 import { Injectable, Logger } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { Articles } from "src/interface/articles.interface";
+// import * as mongoose from 'mongoose';
+
 // 定义服务操作数据库
 const logger = new Logger('article.service')
 
@@ -47,9 +49,11 @@ export class ArticlesService {
         }
 
     }
-    // 查询列表
-    async queryAll(params: Object = {}) {
+    // 查询列表  Types.ObjectId(params._id);
+    async queryAll(params) {
         try {
+            // params._id = mongoose.Types.ObjectId
+            // console.log('params',params)
             const data = await this.articlesModel.find(params);
             return {
                 code: 0,
@@ -88,9 +92,20 @@ export class ArticlesService {
         return await this.articlesModel.find().exec();
     }
     // 删除
-    async del(article: Articles) {
-        // return "111"
-        return await this.articlesModel.find().exec();
+    async delArticle(params) {
+        try {
+            const data = await this.articlesModel.deleteOne(params);;
+            return {
+                code: 0,
+            }
+        } catch (error) {
+            logger.log(`文章删除失败${error}`)
+            return {
+                code: 1,
+                errMsg: `文章删除失败:${error}`
+            }
+        }
+
     }
 
 }
