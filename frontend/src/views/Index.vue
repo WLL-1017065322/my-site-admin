@@ -32,7 +32,7 @@
             <a-menu-item key="3">列表</a-menu-item>
           </router-link>
           <router-link to="/blog/detail">
-            <a-menu-item key="4">正文</a-menu-item>
+            <a-menu-item key="4">详情</a-menu-item>
           </router-link>
           <router-link to="/blog/tags"
             ><a-menu-item key="5">标签</a-menu-item>

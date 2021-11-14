@@ -157,9 +157,11 @@ export function put(url, params) {
  * @param {String} url [请求的url地址] 
  * @param {Object} params [请求时携带的参数] 
  */
-export function del(url, params) {
+export function del(url, data) {
     return new Promise((resolve, reject) => {
-        axios.delete(url, params)
+        axios.delete(url, {
+                data: data
+            })
             // axios.post(url, QS.stringify(params))
             .then(res => {
                 resolve(res.data);
