@@ -1,5 +1,5 @@
 <template>
-  <header>个人信息</header>
+  <header>{{ $route.query.id ? "修改" : "新建" }}文章</header>
   <main>
     <section class="content">
       <a-form
@@ -9,39 +9,43 @@
         :label-col="labelCol"
         :wrapper-col="wrapperCol"
       >
-        <a-form-item label="name" name="name">
-          <a-input v-model:value="formState.name" />
+        <a-form-item label="title" name="title">
+          <a-input v-model:value="formState.title" />
         </a-form-item>
-        <a-form-item label="gender" name="gender">
-          <a-input v-model:value="formState.gender" />
+        <a-form-item label="subhead" name="subhead">
+          <a-input v-model:value="formState.subhead" />
         </a-form-item>
-        <a-form-item label="age" name="age">
-          <a-input v-model:value="formState.age" />
+        <a-form-item label="tags" name="tags">
+          <a-input v-model:value="formState.tags" />
         </a-form-item>
-        <a-form-item label="selfIntroduction" name="selfIntroduction">
-          <a-input v-model:value="formState.selfIntroduction" />
+        <a-form-item label="author" name="author">
+          <a-input v-model:value="formState.author" />
         </a-form-item>
-        <a-form-item label="phone" name="phone">
-          <a-input v-model:value="formState.phone" />
+        <a-form-item label="date" name="date">
+          <a-input v-model:value="formState.date" />
         </a-form-item>
-        <a-form-item label="wechat" name="wechat">
-          <a-input v-model:value="formState.wechat" />
+        <a-form-item label="time" name="time">
+          <a-input v-model:value="formState.time" />
         </a-form-item>
-        <a-form-item label="qq" name="qq">
-          <a-input v-model:value="formState.qq" />
+        <a-form-item label="type" name="type">
+          <a-input v-model:value="formState.type" />
         </a-form-item>
-        <a-form-item label="github" name="github">
-          <a-input v-model:value="formState.github" />
+        <a-form-item label="image" name="image">
+          <a-input v-model:value="formState.image" />
         </a-form-item>
-        <a-form-item label="gitee" name="gitee">
-          <a-input v-model:value="formState.gitee" />
+        <a-form-item label="keywords" name="keywords">
+          <a-input v-model:value="formState.keywords" />
         </a-form-item>
-        <a-form-item label="skill" name="skill">
-          <a-input v-model:value="formState.skill" />
+        <a-form-item label="content" name="content">
+          <!-- <a-input v-model:value="formState.content" /> -->
+          <!-- <div ref="editorElemMenu"></div>
+          <div ref="editorElemBody"></div> -->
+          <a-textarea v-model:value="formState.content" :rows="10" />
+          <div ref="markdownEdit" v-highlight></div>
         </a-form-item>
       </a-form>
       <a-row class="btns">
-        <a-button qq="primary" class="btn" @click="onSubmit">确认</a-button>
+        <a-button type="primary" class="btn" @click="onSubmit">确认</a-button>
       </a-row>
     </section>
   </main>
@@ -49,6 +53,7 @@
 <script lang="ts">
 // import { reactive, onMounted, computed, toRefs } from "vue";
 import { ValidateErrorEntity } from "ant-design-vue/es/form/interface";
+import { Moment } from "moment";
 import {
   defineComponent,
   onMounted,
@@ -57,7 +62,7 @@ import {
   toRaw,
   UnwrapRef,
 } from "vue";
-import { queryBlogDetail, modifyBlog } from "../../api/index.js";
+import { queryBlogDetail, modifyBlog, addBlog } from "../../api/index.js";
 import { useRouter, useRoute } from "vue-router";
 import { message } from "ant-design-vue";
 import Wangeditor from "wangeditor";
@@ -68,20 +73,19 @@ import "highlight.js/styles/a11y-dark.css"; //样式文件
 interface FormState {
   _id: string;
   content: string;
-  name: string;
-  gender: string;
-  age: string;
-  selfIntroduction: string;
-  phone: string;
-  wechat: string;
-  qq: string;
-  github: string;
-  gitee: string;
-  skill: string;
+  title: string;
+  subhead: string;
+  tags: string;
+  author: string;
+  date: string;
+  time: string;
+  type: string;
+  image: string;
+  keywords: string;
   // region: string | undefined;
-  // phone1: Moment | undefined;
+  // date1: Moment | undefined;
   // delivery: boolean;
-  // qq: string[];
+  // type: string[];
   // resource: string;
   // desc: string;
 }
@@ -97,23 +101,22 @@ export default defineComponent({
     const formState: UnwrapRef<FormState> = reactive({
       _id: "",
       content: "",
-      name: "",
-      gender: "",
-      age: "",
-      selfIntroduction: "",
-      phone: "",
-      wechat: "",
-      qq: "",
-      github: "",
+      title: "",
+      subhead: "",
+      tags: "",
+      author: "",
+      date: "",
+      time: "",
+      type: "",
+      image: "",
       comment: "",
-      gitee: "",
-      skill: "",
+      keywords: "",
     });
     const rules = {
-      name: [
+      title: [
         {
           required: true,
-          message: "请输入姓名",
+          message: "请输入标题",
           trigger: "blur",
         },
       ],
@@ -132,6 +135,16 @@ export default defineComponent({
                 const { errMsg = "" } = resp;
                 message.warning(errMsg);
               }
+            } else {
+              delete formState._id;
+              const resp = await addBlog({ ...formState });
+              const { code } = resp;
+              if (code === 0) {
+                message.success("新增成功");
+              } else {
+                const { errMsg = "" } = resp;
+                message.warning(errMsg);
+              }
             }
           } catch (error) {
             console.log(error);
@@ -146,7 +159,25 @@ export default defineComponent({
       formRef.value.resetFields();
     };
 
+    const resetEdit = () => {
+      const elemMenu = editorElemMenu.value;
+      const elemBody = editorElemBody.value;
+      const editor = new Wangeditor(elemMenu, elemBody);
+      editor.create();
+    };
+
+    const initMarkDown = () => {
+      const converter = new showdown.Converter();
+      const markdownRef = markdownEdit.value;
+      // console.log("converter", converter);
+      // const html = converter.makeHtml(formState.content);
+      const html = converter.makeHtml(formState.content);
+      console.log('html',html);
+      markdownRef.innerHTML = html;
+    };
+
     onMounted(async () => {
+      initMarkDown();
       if (route.query.id) {
         try {
           const resp = await queryBlogDetail({
@@ -181,6 +212,7 @@ export default defineComponent({
       editorElemMenu,
       editorElemBody,
       markdownEdit,
+      initMarkDown,
     };
   },
   directives: {
@@ -194,7 +226,9 @@ export default defineComponent({
       },
     },
   },
-  watch: {},
+  watch: {
+    'formState.content': "initMarkDown",
+  },
 });
 </script>
 <style lang="less" scoped>
