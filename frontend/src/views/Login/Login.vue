@@ -1,7 +1,7 @@
 <template>
-  <header>登录</header>
-  <main>
-    <section class="content">
+  <main class="login">
+    <section class="login-content">
+      <header class="login-text">账户密码登录</header>
       <a-form
         ref="formRef"
         :model="formState"
@@ -9,15 +9,15 @@
         :label-col="labelCol"
         :wrapper-col="wrapperCol"
       >
-        <a-form-item label="account" name="account">
+        <a-form-item label="账号" name="account">
           <a-input v-model:value="formState.account" />
         </a-form-item>
-        <a-form-item label="password" name="password">
+        <a-form-item label="密码" name="password">
           <a-input v-model:value="formState.password" />
         </a-form-item>
       </a-form>
       <a-row class="btns">
-        <a-button type="primary" class="btn" @click="onSubmit">确认</a-button>
+        <a-button type="primary" class="btn" @click="onSubmit">登录</a-button>
       </a-row>
     </section>
   </main>
@@ -34,13 +34,9 @@ import {
   toRaw,
   UnwrapRef,
 } from "vue";
-import { queryBlogDetail, modifyBlog, addBlog } from "../../api/index.js";
+import { login } from "../../api/index.js";
 import { useRouter, useRoute } from "vue-router";
 import { message } from "ant-design-vue";
-import Wangeditor from "wangeditor";
-import showdown from "showdown";
-import highlight from "highlight.js";
-import "highlight.js/styles/a11y-dark.css"; //样式文件
 
 interface FormState {
   account: string;
@@ -51,19 +47,25 @@ interface FormState {
 export default defineComponent({
   setup() {
     const formRef = ref();
-    const editorElemMenu = ref();
-    const editorElemBody = ref();
-    const markdownEdit = ref();
     const route = useRoute();
+    const router = useRouter();
+
     const formState: UnwrapRef<FormState> = reactive({
       account: "",
       password: "",
     });
     const rules = {
-      title: [
+      account: [
         {
           required: true,
-          message: "请输入标题",
+          message: "请输入账号",
+          trigger: "blur",
+        },
+      ],
+      password: [
+        {
+          required: true,
+          message: "请输入密码",
           trigger: "blur",
         },
       ],
@@ -73,25 +75,21 @@ export default defineComponent({
         .validate()
         .then(async () => {
           try {
-            if (route.query.id) {
-              const resp = await modifyBlog({ ...formState });
-              const { code } = resp;
-              if (code === 0) {
-                message.success("修改成功");
+            const resp = await login({ ...formState });
+            console.log("resp", resp);
+            const { code } = resp;
+            if (code === 0) {
+              const { data = {} } = resp;
+              if (data.token) {
+                message.success("登录成功");
+                localStorage.setItem("Authorization", data.token);
+                router.push("/");
               } else {
-                const { errMsg = "" } = resp;
-                message.warning(errMsg);
+                message.warning("未返回token，登录失败");
               }
             } else {
-              delete formState._id;
-              const resp = await addBlog({ ...formState });
-              const { code } = resp;
-              if (code === 0) {
-                message.success("新增成功");
-              } else {
-                const { errMsg = "" } = resp;
-                message.warning(errMsg);
-              }
+              const { errMsg = "" } = resp;
+              message.warning(errMsg);
             }
           } catch (error) {
             console.log(error);
@@ -106,84 +104,38 @@ export default defineComponent({
       formRef.value.resetFields();
     };
 
-    const resetEdit = () => {
-      const elemMenu = editorElemMenu.value;
-      const elemBody = editorElemBody.value;
-      const editor = new Wangeditor(elemMenu, elemBody);
-      editor.create();
-    };
-
-    const initMarkDown = () => {
-      const converter = new showdown.Converter();
-      const markdownRef = markdownEdit.value;
-      // console.log("converter", converter);
-      // const html = converter.makeHtml(formState.content);
-      const html = converter.makeHtml(formState.content);
-      console.log('html',html);
-      markdownRef.innerHTML = html;
-    };
-
-    onMounted(async () => {
-      initMarkDown();
-      if (route.query.id) {
-        try {
-          const resp = await queryBlogDetail({
-            id: route.query.id,
-          });
-          const { code } = resp;
-          if (code === 0) {
-            const { data } = resp;
-            // formState = Object.assign({},formState, data);\
-            Object.assign(formState, data);
-            console.log("formState", formState);
-          } else {
-            const { errMsg = "" } = resp;
-            message.warning(errMsg);
-          }
-        } catch (error) {
-          console.log(error);
-          message.error("连接超时");
-        }
-      } else {
-      }
-    });
+    onMounted(async () => {});
     return {
       formRef,
-      labelCol: { span: 4 },
-      wrapperCol: { span: 14 },
-      other: "",
+      labelCol: { span: 6 },
+      wrapperCol: { span: 18 },
       formState,
       rules,
       onSubmit,
       resetForm,
-      editorElemMenu,
-      editorElemBody,
-      markdownEdit,
-      initMarkDown,
     };
   },
-  directives: {
-    highlight: {
-      updated(el) {
-        // el.focus();
-        let blocks = el.querySelectorAll("pre code");
-        blocks.forEach((block) => {
-          highlight.highlightBlock(block);
-        });
-      },
-    },
-  },
-  watch: {
-    'formState.content': "initMarkDown",
-  },
+  watch: {},
 });
 </script>
 <style lang="less" scoped>
-.content {
-  .btns {
+.login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f2f5;
+  .login-content {
+    width: 400px;
+    height: 400px;
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    align-self: center;
+    align-items: center;
+    .login-text {
+      padding: 20px 0;
+      font-size: 16px;
+    }
   }
 }
 </style>

@@ -7,4 +7,8 @@ const delBlog = (data) => del('/articles', data)
 const modifyBlog = (data) => put('/articles', data)
 const addBlog = (data) => post('/articles', data)
 
-export { queryBlogList, queryBlogDetail, delBlog, modifyBlog, addBlog }
+
+const login = (data) => post('/auth/login', data)
+
+
+export { queryBlogList, queryBlogDetail, delBlog, modifyBlog, addBlog, login }

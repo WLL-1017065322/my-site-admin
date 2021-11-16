@@ -15,6 +15,7 @@ export class AuthController {
         summary: '用户登录'
     })
     public async login(@Body() userDto: User) {
+        console.log('用户登录', userDto);
         return await this.authService.login(userDto)
     }
 

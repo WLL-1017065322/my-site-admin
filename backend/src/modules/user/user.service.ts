@@ -2,7 +2,7 @@
  * @Author: along
  * @Date: 2021-11-02 00:12:55 
  * @Last Modified by: along
- * @Last Modified time: 2021-11-04 02:19:12
+ * @Last Modified time: 2021-11-16 23:37:10
  */
 
 import { Injectable, Logger } from "@nestjs/common";
@@ -37,10 +37,10 @@ export class UserService {
      * @param user 
      * @returns {*}
      */
-    async findOneByPhone(phone: string) {
+    async findOneByAccount(account: string) {
         return await this.userModel.find(
             {
-                phone: phone
+                account: account
             }
         );
     }

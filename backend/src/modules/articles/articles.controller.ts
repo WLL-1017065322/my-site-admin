@@ -1,5 +1,6 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, Req, } from "@nestjs/common";
-import { ApiOperation, ApiTags } from "@nestjs/swagger";
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, Req, UseGuards, } from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
+import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { query } from "express";
 import { identity } from "rxjs";
 import { Articles } from "src/interface/articles.interface";
@@ -9,6 +10,8 @@ import { ArticlesService } from "./articles.service";
 // 在对应的控制器中调用服务
 
 @Controller('articles')
+@UseGuards(AuthGuard('jwt'))
+@ApiBearerAuth('jwt')
 @ApiTags('articles')
 export class ArticlesController {
     constructor(private readonly articlesService: ArticlesService) {

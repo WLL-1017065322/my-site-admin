@@ -22,14 +22,16 @@ export class AuthService {
      *  
      */
     private async validateUser(user: User) {
-        const phone: string = user.phone
+        console.log('user',user);
+        const account: string = user.account
         const password: string = user.password
-        return this.userService.findOneByPhone(phone)
+        return this.userService.findOneByAccount(account)
             .then(res => {
+                console.log('res',res);
                 if (res.length === 0) {
                     this.response = {
                         code: 3,
-                        msg: '用户尚未注册'
+                        errMsg: '用户尚未注册'
                     }
                     throw this.response
                 }
@@ -37,10 +39,15 @@ export class AuthService {
             })
             .then((dbUser: User) => {
                 const pass = encript(password, dbUser.salt);
+                // console.log('pass',pass,dbUser,password);
                 if (pass === dbUser.password) {
-                    return this.response = { code: 0, msg: dbUser._id }
+                    return this.response = {
+                        code: 0, data: {
+                            uid: dbUser._id
+                        }
+                    }
                 } else {
-                    return this.response = { code: 4, msg: '用户名密码错误' }
+                    return this.response = { code: 4, errMsg: '用户名密码错误' }
                 }
             })
             .catch(err => err)
@@ -53,8 +60,8 @@ export class AuthService {
                     this.response = res;
                     throw this.response
                 }
-                const userid = res.msg.userid
-                return this.response = { code: 0, msg: { token: await this.createToken(user), userid } }
+                const userid = res.data.userid
+                return this.response = { code: 0, data: { token: await this.createToken(user), userid } }
             })
             .catch(err => err)
     }
@@ -65,13 +72,13 @@ export class AuthService {
      * @returns {*}
      */
     async register(user: User) {
-        return this.userService.findOneByPhone(user.phone)
+        return this.userService.findOneByAccount(user.account)
             .then((res) => {
                 if (res && res.length > 0) {
                     // throw Error("用户已注册")
                     this.response = {
                         code: 1,
-                        msg: '用户已注册'
+                        errMsg: '用户已注册'
                     }
                     throw this.response
                 }
@@ -79,16 +86,16 @@ export class AuthService {
             .then(async () => {
                 try {
                     const createUser = new this.userModel(user)
+                    console.log('user',user);
                     const resp = await createUser.save()
                     this.response = {
                         code: 0,
-                        msg: "注册成功"
                     }
                     return this.response
                 } catch (error) {
                     this.response = {
                         code: 2,
-                        msg: '用户注册失败，错误详情' + error
+                        errMsg: '用户注册失败，错误详情' + error
                     }
                     throw this.response
                     // throw Error("保存用户失败" + error);
@@ -104,22 +111,22 @@ export class AuthService {
     }
 
     public async alter(user: User) {
-        // return this.userService.findOneByPhone(user.phone).then(async () => {
-        //         return await this.userModel.findOneAndUpdate({ phone: user.phone }, user, {}, () => {
-        //             logger.log(`用户${user.phone}修改密码成功`)
+        // return this.userService.findOneByAccount(user.account).then(async () => {
+        //         return await this.userModel.findOneAndUpdate({ account: user.account }, user, {}, () => {
+        //             logger.log(`用户${user.account}修改密码成功`)
         //         }).then(() => {
         //             return (this.response = { code: 0, msg: '用户修改成功' })
         //         })
         //     })
-        const resp = await this.userService.findOneByPhone(user.phone)
+        const resp = await this.userService.findOneByAccount(user.account)
         if (resp.length > 0) {
-            const _resp = await this.userModel.findOneAndUpdate({ phone: user.phone }, user)
+            const _resp = await this.userModel.findOneAndUpdate({ account: user.account }, user)
             if (_resp) {
-                logger.log(`用户${user.phone}修改密码成功`)
-                return (this.response = { code: 0, msg: '用户修改成功' })
+                logger.log(`用户${user.account}修改密码成功`)
+                return (this.response = { code: 0, errMsg: '用户修改成功' })
             }
         }
-        return (this.response = { code: 1, msg: '用户修改失败' })
+        return (this.response = { code: 1, errMsg: '用户修改失败' })
     }
 
 
