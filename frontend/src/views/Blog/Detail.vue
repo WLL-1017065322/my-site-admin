@@ -40,7 +40,7 @@
           <!-- <a-input v-model:value="formState.content" /> -->
           <!-- <div ref="editorElemMenu"></div>
           <div ref="editorElemBody"></div> -->
-          <a-textarea v-model:value="markDownContent" />
+          <a-textarea v-model:value="formState.content" :rows="10" />
           <div ref="markdownEdit" v-highlight></div>
         </a-form-item>
       </a-form>
@@ -98,7 +98,6 @@ export default defineComponent({
     const editorElemBody = ref();
     const markdownEdit = ref();
     const route = useRoute();
-    const markDownContent = ref();
     const formState: UnwrapRef<FormState> = reactive({
       _id: "",
       content: "",
@@ -168,12 +167,12 @@ export default defineComponent({
     };
 
     const initMarkDown = () => {
-      console.log(111);
       const converter = new showdown.Converter();
       const markdownRef = markdownEdit.value;
       // console.log("converter", converter);
-      // const html = converter.makeHtml(markDownContent);
-      const html = converter.makeHtml(markDownContent.value);
+      // const html = converter.makeHtml(formState.content);
+      const html = converter.makeHtml(formState.content);
+      console.log('html',html);
       markdownRef.innerHTML = html;
     };
 
@@ -213,7 +212,6 @@ export default defineComponent({
       editorElemMenu,
       editorElemBody,
       markdownEdit,
-      markDownContent,
       initMarkDown,
     };
   },
@@ -229,7 +227,7 @@ export default defineComponent({
     },
   },
   watch: {
-    markDownContent: "initMarkDown",
+    'formState.content': "initMarkDown",
   },
 });
 </script>
