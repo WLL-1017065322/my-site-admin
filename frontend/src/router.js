@@ -3,12 +3,14 @@ import { createRouter, createWebHistory } from "vue-router"
 import Index from './views/Index.vue'
 
 import Home from './views/Home.vue'
-import MyInfo from './views/MyInfo.vue'
+import MyInfo from './views/AboutMe/MyInfo.vue'
 
 
 import BlogDetail from './views/Blog/Detail.vue'
 import BlogList from './views/Blog/List.vue'
 import BlogTags from './views/Blog/Tags.vue'
+import BlogKeywords from './views/Blog/Keywords.vue'
+
 
 import Comment from './views/Comments/Comment.vue'
 import LeaveMessage from './views/Comments/LeaveMessage.vue'
@@ -34,6 +36,8 @@ const router = createRouter({
             { path: 'blog/list', name: 'BlogList', component: BlogList },
             { path: 'blog/detail', name: 'BlogDetail', component: BlogDetail },
             { path: 'blog/tags', name: 'BlogTags', component: BlogTags },
+            { path: 'blog/keywords', name: 'BlogKeywords', component: BlogKeywords },
+
 
             { path: 'comments/comment', name: 'Comment', component: Comment },
             { path: 'comments/leavemessage', name: 'LeaveMessage', component: LeaveMessage },

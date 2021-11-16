@@ -37,6 +37,9 @@
           <router-link to="/blog/tags"
             ><a-menu-item key="5">标签</a-menu-item>
           </router-link>
+          <router-link to="/blog/keywords"
+            ><a-menu-item key="6">关键词</a-menu-item>
+          </router-link>
         </a-sub-menu>
         <a-sub-menu key="sub2">
           <template #title>
