@@ -11,7 +11,9 @@
         </a-row>
         <div class="search">
           <a-button @click="search">搜索</a-button>
-          <a-button @click="addUser" style="margin-left: 10px">新增</a-button>
+          <a-button @click="insertUser" style="margin-left: 10px"
+            >新增</a-button
+          >
         </div>
       </a-form>
     </div>
@@ -73,11 +75,10 @@ import {
 import { useRouter } from "vue-router";
 
 import {
-  queryBlogList,
-  queryBlogDetail,
-  delBlog,
-  modifyBlog,
-  addBlog,
+  queryUserList,
+  delUser,
+  modifyUser,
+  addUser,
 } from "../../api/index.js";
 import { message } from "ant-design-vue";
 // import { useStore } from 'vuex'
@@ -111,6 +112,7 @@ export default defineComponent({
       phone: "",
       account: "",
       role: "",
+      _id: "",
     });
     // const data= reactive<Test>({data:[]})
     const obj = reactive({
@@ -120,13 +122,36 @@ export default defineComponent({
     const modifyRules = ref({});
 
     const showModal = ref(false);
-    const handleOk = () => {
-      showModal.value = false;
+    const handleOk = async () => {
+      console.log(isAdd);
+      if (isAdd.value) {
+        const resp = await addUser({ ...modifyState });
+        const { code, errMsg = "", data = [] } = resp;
+        if (code === 0) {
+          showModal.value = false;
+          message.success("新增成功");
+          search();
+        } else {
+          message.warn(errMsg);
+          console.log(message);
+        }
+      } else {
+        const resp = await modifyUser({ ...modifyState });
+        const { code, errMsg = "", data = [] } = resp;
+        if (code === 0) {
+          message.success("修改成功");
+          showModal.value = false;
+          search();
+        } else {
+          message.warn(errMsg);
+          console.log(message);
+        }
+      }
     };
 
     const search = async () => {
       console.log("formState", formState);
-      const resp = await queryBlogList({ ...formState });
+      const resp = await queryUserList({ ...formState });
       const { code, errMsg = "", data = [] } = resp;
       if (code === 0) {
         obj.data = [].concat(data);
@@ -137,20 +162,33 @@ export default defineComponent({
     };
 
     const isAdd = ref(true);
-    const addUser = () => {
+    const resetModifyState = () => {
+      modifyState = Object.assign(modifyState, {
+        username: "",
+        phone: "",
+        account: "",
+        role: "",
+        _id: "",
+      });
+    };
+    const insertUser = async () => {
+      resetModifyState();
       console.log("showModal", showModal.value);
       showModal.value = true;
       isAdd.value = true;
     };
 
-    const modify = (record) => {
+    const modify = async (record) => {
+      resetModifyState();
       showModal.value = true;
       isAdd.value = false;
-      modifyState = { ...modifyState, ...record };
+      console.log("modifyState", modifyState);
+      modifyState = Object.assign(modifyState, record);
+      console.log("modifyState1", modifyState);
     };
 
     const onDelete = async (_id) => {
-      const resp = await delBlog({ _id });
+      const resp = await delUser({ id: _id });
       const { code, errMsg = "", data = [] } = resp;
       if (code === 0) {
         message.success("删除成功");
@@ -174,7 +212,7 @@ export default defineComponent({
       modifyState,
       modifyRules,
       search,
-      addUser,
+      insertUser,
       onDelete,
       modify,
       isAdd,

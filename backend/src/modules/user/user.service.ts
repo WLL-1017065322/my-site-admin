@@ -2,7 +2,7 @@
  * @Author: along
  * @Date: 2021-11-02 00:12:55 
  * @Last Modified by: along
- * @Last Modified time: 2021-11-22 22:52:52
+ * @Last Modified time: 2021-11-22 23:50:29
  */
 
 import { Injectable, Logger } from "@nestjs/common";
@@ -60,6 +60,7 @@ export class UserService {
      */
     async addUser(user) {
         try {
+            delete user._id
             const newUser = new this.userModel(user);
             await newUser.save();
             return {
@@ -84,8 +85,11 @@ export class UserService {
     async putUser(user) {
         console.log('user', user);
         try {
-            const newUser = new this.userModel(user);
-            await newUser.save();
+            // const newUser = new this.userModel(user);
+            // await newUser.save();
+            let params = { ...user };
+            delete params._id;
+            const data = await this.userModel.findByIdAndUpdate({ _id: user._id }, params)
             return {
                 code: 0,
                 data: '用户修改成功'
@@ -122,4 +126,19 @@ export class UserService {
             }
         }
     }
+
+    /**
+     * @description 获取
+     * @Date 2021-11-02 00:12:55 
+     * @param user 
+     * @returns {*}
+     */
+    async findOneByAccount(account: string) {
+        return await this.userModel.find(
+            {
+                account: account
+            }
+        );
+    }
+
 }

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query, SetMetadata, UseGuards, } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Post, Put, Query, SetMetadata, UseGuards, } from "@nestjs/common";
 import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
 // import { AuthGuard } from "src/guards/auth.guard";
 import { AuthGuard } from '@nestjs/passport';
@@ -10,10 +10,10 @@ import { UserService } from "./user.service";
 
 // 在对应的控制器中调用服务
 
-@Controller('user')
+@Controller('users')
 @UseGuards(AuthGuard('jwt'))
 @ApiBearerAuth('jwt')
-@ApiTags('user')
+@ApiTags('users')
 // @UseGuards(AuthGuard)
 export class UserController {
     constructor(private readonly userService: UserService) {
@@ -33,23 +33,23 @@ export class UserController {
         summary: "新增用户"
     })
     add(@Body() user) {
-        console.log('获取用户列表', user);
+        console.log('新增用户', user);
         return this.userService.addUser(user)
     }
-    @Post()
+    @Put()
     @ApiOperation({
         summary: "修改用户"
     })
     put(@Body() user) {
-        console.log('获取用户列表', user);
+        console.log('修改用户', user);
         return this.userService.putUser(user)
     }
-    @Post()
+    @Delete()
     @ApiOperation({
         summary: "删除用户"
     })
     del(@Body('id') id) {
-        console.log('获取用户列表', id);
+        console.log('删除用户', id);
         return this.userService.delUser(id)
     }
 }
