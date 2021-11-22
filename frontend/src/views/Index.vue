@@ -29,16 +29,19 @@
             </span>
           </template>
           <router-link to="/blog/list">
-            <a-menu-item key="3">列表</a-menu-item>
+            <a-menu-item key="3-1">列表</a-menu-item>
           </router-link>
           <router-link to="/blog/detail">
-            <a-menu-item key="4">详情</a-menu-item>
+            <a-menu-item key="3-2">详情</a-menu-item>
           </router-link>
           <router-link to="/blog/tags"
-            ><a-menu-item key="5">标签</a-menu-item>
+            ><a-menu-item key="3-3">标签</a-menu-item>
           </router-link>
           <router-link to="/blog/keywords"
-            ><a-menu-item key="6">关键词</a-menu-item>
+            ><a-menu-item key="3-4">关键词</a-menu-item>
+          </router-link>
+          <router-link to="/blog/batch"
+            ><a-menu-item key="3-5">批量处理</a-menu-item>
           </router-link>
         </a-sub-menu>
         <a-sub-menu key="sub2">
@@ -49,10 +52,10 @@
             </span>
           </template>
           <router-link to="/comments/comment">
-            <a-menu-item key="6">评论</a-menu-item>
+            <a-menu-item key="4-1">评论</a-menu-item>
           </router-link>
           <router-link to="/comments/leavemessage">
-            <a-menu-item key="8">留言</a-menu-item>
+            <a-menu-item key="4-2">留言</a-menu-item>
           </router-link>
         </a-sub-menu>
         <a-sub-menu key="sub3">
@@ -63,15 +66,15 @@
             </span>
           </template>
           <router-link to="/roles/users">
-            <a-menu-item key="6">用户管理</a-menu-item>
+            <a-menu-item key="5-1">用户管理</a-menu-item>
           </router-link>
           <router-link to="/roles/auth">
-            <a-menu-item key="8">权限管理</a-menu-item>
+            <a-menu-item key="5-2">权限管理</a-menu-item>
           </router-link>
         </a-sub-menu>
         <router-link to="/myinfo"></router-link>
 
-        <a-menu-item key="9">
+        <a-menu-item key="9" @click="logout">
           <file-outlined />
           <span>登出</span>
         </a-menu-item>
@@ -90,11 +93,6 @@
         <div>
           <router-view></router-view>
         </div>
-        <!-- <div
-          :style="{ padding: '24px', background: '#fff', minHeight: '360px' }"
-        >
-          Bill is a cat.
-        </div> -->
       </a-layout-content>
       <a-layout-footer style="text-align: center">
         Ant Design ©2018 Created by Ant UED
@@ -111,6 +109,7 @@ import {
   FileOutlined,
 } from "@ant-design/icons-vue";
 import { defineComponent, ref } from "vue";
+import { useRouter } from "vue-router";
 export default defineComponent({
   components: {
     PieChartOutlined,
@@ -119,13 +118,20 @@ export default defineComponent({
     TeamOutlined,
     FileOutlined,
   },
-  data() {
-    const handleClick = (e: Event) => {
-      console.log("click", e);
+  setup() {
+    const router = useRouter();
+    const logout = () => {
+      localStorage.removeItem("Authorization");
+      router.push("/login");
     };
-
+    return { logout };
+  },
+  data() {
+    // const handleClick = (e: Event) => {
+    //   console.log("click", e);
+    // };
     return {
-      handleClick,
+      // handleClick,
       collapsed: ref<boolean>(false),
       selectedKeys: ref<string[]>(["1"]),
     };

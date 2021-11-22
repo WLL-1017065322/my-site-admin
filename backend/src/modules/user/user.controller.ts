@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, SetMetadata, UseGuards, } from "@nestjs/common";
+import { Body, Controller, Get, Post, Query, SetMetadata, UseGuards, } from "@nestjs/common";
 import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
 // import { AuthGuard } from "src/guards/auth.guard";
 import { AuthGuard } from '@nestjs/passport';
@@ -19,20 +19,37 @@ export class UserController {
     constructor(private readonly userService: UserService) {
     }
 
-    @Get()
-    index() {
-        return this.userService.userInfo()
-        // return '1'
+    @Get('list')
+    @ApiOperation({
+        summary: "获取用户列表"
+    })
+    getList(@Query('id') id) {
+        console.log('获取用户列表', id);
+        return this.userService.queryAll(id)
     }
 
-
-    @Get('hello')
-    // @SetMetadata('roles',['admin'])
-    @Role('admin')
-    // @UseGuards(AuthGuard('jwt'))
-    hello() {
-        return 'helloworld'
-        // return this.userService.helloRedis()
-        // return '1'
+    @Post()
+    @ApiOperation({
+        summary: "新增用户"
+    })
+    add(@Body() user) {
+        console.log('获取用户列表', user);
+        return this.userService.addUser(user)
+    }
+    @Post()
+    @ApiOperation({
+        summary: "修改用户"
+    })
+    put(@Body() user) {
+        console.log('获取用户列表', user);
+        return this.userService.putUser(user)
+    }
+    @Post()
+    @ApiOperation({
+        summary: "删除用户"
+    })
+    del(@Body('id') id) {
+        console.log('获取用户列表', id);
+        return this.userService.delUser(id)
     }
 }
