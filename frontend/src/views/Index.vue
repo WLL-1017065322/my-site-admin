@@ -5,9 +5,10 @@
       <a-menu
         theme="dark"
         v-model:selectedKeys="selectedKeys"
-        v-model:openKeys="openKeys"
         mode="inline"
         @click="handleClick"
+        @openChange="handleOpenChange"
+        :openKeys="openKeys"
       >
         <router-link to="/">
           <a-menu-item key="1">
@@ -22,7 +23,7 @@
           </a-menu-item>
         </router-link>
 
-        <a-sub-menu key="sub1">
+        <a-sub-menu key="3">
           <template #title>
             <span>
               <user-outlined />
@@ -45,7 +46,7 @@
             ><a-menu-item key="3-5">批量处理</a-menu-item>
           </router-link>
         </a-sub-menu>
-        <a-sub-menu key="sub2">
+        <a-sub-menu key="4">
           <template #title>
             <span>
               <team-outlined />
@@ -59,7 +60,7 @@
             <a-menu-item key="4-2">留言</a-menu-item>
           </router-link>
         </a-sub-menu>
-        <a-sub-menu key="sub3">
+        <a-sub-menu key="5">
           <template #title>
             <span>
               <team-outlined />
@@ -81,7 +82,6 @@
         </a-menu-item>
       </a-menu>
     </a-layout-sider>
-
     <a-layout>
       <a-layout-header style="background: #fff; padding: 0">
         <div class="avatar">头像</div>
@@ -109,7 +109,15 @@ import {
   TeamOutlined,
   FileOutlined,
 } from "@ant-design/icons-vue";
-import { defineComponent, ref, toRefs, watchEffect } from "vue";
+import {
+  defineComponent,
+  onMounted,
+  reactive,
+  ref,
+  toRefs,
+  watch,
+  watchEffect,
+} from "vue";
 import { useRoute, useRouter } from "vue-router";
 export default defineComponent({
   components: {
@@ -126,21 +134,49 @@ export default defineComponent({
       localStorage.removeItem("Authorization");
       router.push("/login");
     };
-    const selectedKeys = ref<string[]>(["1"]);
-    const menuKey:string = <string>route.meta.menuKey;
-    watchEffect(() => {
-      console.log("route", route.meta.menuKey);
-      console.log('selectedKeys',selectedKeys);
-      selectedKeys.value[0] = menuKey;
+    const state = reactive({
+      rootSubmenuKeys: ["3", "4", "5"],
+      openKeys: [],
+      selectedKeys: [],
     });
-    return { logout, selectedKeys };
+
+    const routeChange = () => {
+      console.log('route',route.matched);
+      const menuKey: string = <string>route.meta.menuKey;
+      let subMenu = "";
+      if (menuKey.split("-").length > 1) {
+        subMenu = menuKey.split("-")[0];
+        state.openKeys = [subMenu];
+      }
+      state.selectedKeys[0] = menuKey;
+    };
+    onMounted(routeChange);
+    // watch(route, routeChange)
+    const handleClick = (e: Event) => {
+      // console.log("click", e.key);
+      // openKeys.value = <string>e.key;
+    };
+
+    const handleOpenChange = (openKeys: string[]) => {
+      console.log(22);
+      const latestOpenKey = openKeys.find((key) => {
+        return state.openKeys.indexOf(key) === -1;
+      });
+      if (state.rootSubmenuKeys.indexOf(latestOpenKey!) === -1) {
+        state.openKeys = openKeys;
+      } else {
+        state.openKeys = latestOpenKey ? [latestOpenKey] : [];
+      }
+    };
+    return {
+      logout,
+      handleClick,
+      handleOpenChange,
+      ...toRefs(state),
+    };
   },
   data() {
-    // const handleClick = (e: Event) => {
-    //   console.log("click", e);
-    // };
     return {
-      // handleClick,
       collapsed: ref<boolean>(false),
     };
   },

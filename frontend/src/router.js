@@ -32,10 +32,11 @@ const router = createRouter({
             path: '/',
             name: 'Index',
             component: Index,
-            meta: { menuKey: '1' },
+            meta: { menuKey: '1', title: '首页' },
             children: [
                 { path: 'home', name: 'Home', component: Home, meta: { menuKey: '1' } },
                 { path: 'myinfo', name: 'MyInfo', component: MyInfo, meta: { menuKey: '2' } },
+
                 { path: 'blog/list', name: 'BlogList', component: BlogList, meta: { menuKey: '3-1' } },
                 { path: 'blog/detail', name: 'BlogDetail', component: BlogDetail, meta: { menuKey: '3-2' } },
                 { path: 'blog/tags', name: 'BlogTags', component: BlogTags, meta: { menuKey: '3-3' } },
