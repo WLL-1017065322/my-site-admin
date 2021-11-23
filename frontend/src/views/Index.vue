@@ -5,6 +5,7 @@
       <a-menu
         theme="dark"
         v-model:selectedKeys="selectedKeys"
+        v-model:openKeys="openKeys"
         mode="inline"
         @click="handleClick"
       >
@@ -108,8 +109,8 @@ import {
   TeamOutlined,
   FileOutlined,
 } from "@ant-design/icons-vue";
-import { defineComponent, ref } from "vue";
-import { useRouter } from "vue-router";
+import { defineComponent, ref, toRefs, watchEffect } from "vue";
+import { useRoute, useRouter } from "vue-router";
 export default defineComponent({
   components: {
     PieChartOutlined,
@@ -120,11 +121,19 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter();
+    const route = useRoute();
     const logout = () => {
       localStorage.removeItem("Authorization");
       router.push("/login");
     };
-    return { logout };
+    const selectedKeys = ref<string[]>(["1"]);
+    const menuKey:string = <string>route.meta.menuKey;
+    watchEffect(() => {
+      console.log("route", route.meta.menuKey);
+      console.log('selectedKeys',selectedKeys);
+      selectedKeys.value[0] = menuKey;
+    });
+    return { logout, selectedKeys };
   },
   data() {
     // const handleClick = (e: Event) => {
@@ -133,7 +142,6 @@ export default defineComponent({
     return {
       // handleClick,
       collapsed: ref<boolean>(false),
-      selectedKeys: ref<string[]>(["1"]),
     };
   },
 });
