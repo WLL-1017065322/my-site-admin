@@ -14,6 +14,10 @@ const modifyUser = (data) => put('/users', data)
 const addUser = (data) => post('/users', data)
 
 
+const getMyInfo = (data) => get('/users/info', data)
+const modifyMyInfo = (data) => post('/users/info', data)
+
+
 
 
 const login = (data) => post('/auth/login', data)
@@ -30,4 +34,6 @@ export {
     delUser,
     modifyUser,
     addUser,
+    modifyMyInfo,
+    getMyInfo
 }

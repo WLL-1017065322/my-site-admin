@@ -57,7 +57,7 @@ import {
   toRaw,
   UnwrapRef,
 } from "vue";
-import { queryBlogDetail, modifyBlog } from "../../api/index.js";
+import { getMyInfo, modifyMyInfo } from "../../api/index.js";
 import { useRouter, useRoute } from "vue-router";
 import { message } from "ant-design-vue";
 import Wangeditor from "wangeditor";
@@ -124,7 +124,7 @@ export default defineComponent({
         .then(async () => {
           try {
             if (route.query.id) {
-              const resp = await modifyBlog({ ...formState });
+              const resp = await modifyMyInfo({ ...formState });
               const { code } = resp;
               if (code === 0) {
                 message.success("修改成功");
@@ -147,28 +147,37 @@ export default defineComponent({
     };
 
     onMounted(async () => {
-      if (route.query.id) {
-        try {
-          const resp = await queryBlogDetail({
-            id: route.query.id,
-          });
-          const { code } = resp;
-          if (code === 0) {
-            const { data } = resp;
-            // formState = Object.assign({},formState, data);\
-            Object.assign(formState, data);
-            console.log("formState", formState);
-          } else {
-            const { errMsg = "" } = resp;
-            message.warning(errMsg);
-          }
-        } catch (error) {
-          console.log(error);
-          message.error("连接超时");
-        }
-      } else {
+      try {
+        const resp = await getMyInfo();
+        const { code } = resp;
+        console.log('resp',resp);
+      } catch (error) {
+        console.log(error);
       }
-    });
+    }),
+      onMounted(async () => {
+        if (route.query.id) {
+          try {
+            const resp = await modifyMyInfo({
+              id: route.query.id,
+            });
+            const { code } = resp;
+            if (code === 0) {
+              const { data } = resp;
+              // formState = Object.assign({},formState, data);\
+              Object.assign(formState, data);
+              console.log("formState", formState);
+            } else {
+              const { errMsg = "" } = resp;
+              message.warning(errMsg);
+            }
+          } catch (error) {
+            console.log(error);
+            message.error("连接超时");
+          }
+        } else {
+        }
+      });
     return {
       formRef,
       labelCol: { span: 4 },
