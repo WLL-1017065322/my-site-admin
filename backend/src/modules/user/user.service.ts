@@ -2,7 +2,7 @@
  * @Author: along
  * @Date: 2021-11-02 00:12:55 
  * @Last Modified by: along
- * @Last Modified time: 2021-11-22 23:50:29
+ * @Last Modified time: 2021-11-28 23:25:10
  */
 
 import { Injectable, Logger } from "@nestjs/common";
@@ -139,6 +139,56 @@ export class UserService {
                 account: account
             }
         );
+    }
+
+    /**
+     * @description 获取登录用户信息
+     * @Date 2021-11-02 00:12:55 
+     * @param user 
+     * @returns {*}
+     */
+    async findLoginerById(id: string) {
+        console.log('id', id);
+        const data = await this.userModel.findById(id);
+        try {
+            return {
+                code: 0,
+                data: data
+            }
+        } catch (error) {
+            console.log(error);
+            return {
+                code: 1,
+                errMsg: error
+            }
+        }
+    }
+    /**
+     * @description 修改登录用户信息
+     * @Date 2021-11-02 00:12:55 
+     * @param user 
+     * @returns {*}
+     */
+    async modifyLoginerById(id: string, params) {
+        const _id = new ObjectId(id)
+        delete params._id;
+        console.log('id===============', id, params);
+        try {
+            const data = await this.userModel.findByIdAndUpdate(_id, {
+                username: params.username,
+                phone: params.phone
+            });
+            return {
+                code: 0,
+                data: data
+            }
+        } catch (error) {
+            console.log(error);
+            return {
+                code: 1,
+                errMsg: error
+            }
+        }
     }
 
 }

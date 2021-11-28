@@ -9,8 +9,9 @@ export class AuthGuard implements CanActivate {
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     const roles = this.reflecctor.get<string[]>('roles', context.getHandler())
+    console.log('roles',roles);
     if(!roles){
-      return true
+      return true;
     }
     return true;
   }

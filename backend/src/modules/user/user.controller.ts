@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Post, Put, Query, SetMetadata, UseGuards, } from "@nestjs/common";
+import { Body, Controller, Delete, Request, Get, Post, Put, Query, SetMetadata, UseGuards, } from "@nestjs/common";
 import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
 // import { AuthGuard } from "src/guards/auth.guard";
 import { AuthGuard } from '@nestjs/passport';
@@ -51,5 +51,23 @@ export class UserController {
     del(@Body('id') id) {
         console.log('删除用户', id);
         return this.userService.delUser(id)
+    }
+
+    @Get('/info')
+    @ApiOperation({
+        summary: "获取登录用户信息"
+    })
+    getLoginer(@Request() req) {
+        console.log('登录用户', req.user);
+        return this.userService.findLoginerById(req.user.userId)
+    }
+
+    @Put('/info')
+    @ApiOperation({
+        summary: "修改登录的用户信息"
+    })
+    modifyLoginer(@Request() req) {
+        console.log('修改用户', req.user, req.body);
+        return this.userService.modifyLoginerById(req.user.userId, req.body)
     }
 }

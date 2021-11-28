@@ -60,8 +60,10 @@ export class AuthService {
                     this.response = res;
                     throw this.response
                 }
-                const userid = res.data.userid
-                return this.response = { code: 0, data: { token: await this.createToken(user), userid } }
+                const userid = res.data.uid
+                let newUser = {...user}
+                newUser._id = userid.toString();
+                return this.response = { code: 0, data: { token: await this.createToken(newUser), userid } }
             })
             .catch(err => err)
     }
@@ -130,7 +132,7 @@ export class AuthService {
     }
 
 
-    private async createToken(user: User) {
+    private async createToken(user) {
         return await this.jwtService.sign(user)
     }
 }

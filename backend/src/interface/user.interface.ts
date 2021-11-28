@@ -4,11 +4,11 @@ import { Document } from 'mongoose';
 
 @Schema()
 export class User extends Document {
-    // @Prop()
-    // @ApiProperty({
-    //     description: "用户名",
-    //     example: '11111'
-    // })
+    @Prop()
+    @ApiProperty({
+        description: "用户名",
+        example: '11111'
+    })
     readonly username: string;
     @Prop()
     @ApiProperty({

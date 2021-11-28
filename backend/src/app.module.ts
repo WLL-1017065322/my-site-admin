@@ -11,6 +11,7 @@ import { DbModule } from './db/db.module';
 import { Log4jsModule } from "@nestx-log4js/core";
 import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { BatchModule } from './batch/batch.module';
 // let redisOption:RedisModuleOptions = {
 //   port: 6379,
 //   name: 'management',
@@ -26,6 +27,7 @@ import { AuthModule } from './auth/auth.module';
     DbModule,
     Log4jsModule.forRoot(),
     AuthModule,
+    BatchModule,
     // RedisModule.register(redisOption)
     // CommonRedisModule,
     // RedisModule.forRootAsync({
