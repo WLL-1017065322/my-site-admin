@@ -10,7 +10,7 @@ import BlogDetail from './views/Blog/Detail.vue'
 import BlogList from './views/Blog/List.vue'
 import BlogTags from './views/Blog/Tags.vue'
 import BlogKeywords from './views/Blog/Keywords.vue'
-import BlogBatch from './views/Blog/Batch.vue'
+import Batch from './views/Batch/Batch.vue'
 
 
 
@@ -32,6 +32,7 @@ const router = createRouter({
             path: '/',
             name: 'Index',
             component: Index,
+            redirect: '/home',
             meta: { menuKey: '1', title: '首页' },
             children: [
                 { path: 'home', name: 'Home', component: Home, meta: { menuKey: '1' } },
@@ -41,7 +42,6 @@ const router = createRouter({
                 { path: 'blog/detail', name: 'BlogDetail', component: BlogDetail, meta: { menuKey: '3-2' } },
                 { path: 'blog/tags', name: 'BlogTags', component: BlogTags, meta: { menuKey: '3-3' } },
                 { path: 'blog/keywords', name: 'BlogKeywords', component: BlogKeywords, meta: { menuKey: '3-4' } },
-                { path: 'blog/batch', name: 'BlogBatch', component: BlogBatch, meta: { menuKey: '3-5' } },
 
 
                 { path: 'comments/comment', name: 'Comment', component: Comment, meta: { menuKey: '4-1' } },
@@ -49,6 +49,9 @@ const router = createRouter({
 
                 { path: 'roles/users', name: 'Users', component: Users, meta: { menuKey: '5-1' } },
                 { path: 'roles/auth', name: 'Auth', component: Auth, meta: { menuKey: '5-2' } },
+
+                { path: 'batch', name: 'Batch', component: Batch, meta: { menuKey: '6' } },
+
 
 
                 { path: '/:pathMatch(.*)*', name: 'not-found', component: NotFound },

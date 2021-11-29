@@ -3,6 +3,8 @@ import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { Logger } from '@nestjs/common';
 import { Log4jsLogger } from '@nestx-log4js/core';
+import { join } from 'path';
+import { NestExpressApplication } from '@nestjs/platform-express';
 const logger = new Logger("main.ts");
 
 const serverPort: number = 3000;
@@ -10,7 +12,11 @@ const serverPort: number = 3000;
  * 主方法
  */
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  app.useStaticAssets(join(__dirname, '..', 'public'), {
+    prefix: '/static/',
+  });
+  app.setBaseViewsDir(join(__dirname, '..', 'views'));
   /**
    * swagger配置
    */

@@ -11,7 +11,10 @@ import { DbModule } from './db/db.module';
 import { Log4jsModule } from "@nestx-log4js/core";
 import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './auth/auth.module';
-import { BatchModule } from './batch/batch.module';
+import { BatchModule } from './modules/batch/batch.module';
+
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 // let redisOption:RedisModuleOptions = {
 //   port: 6379,
 //   name: 'management',
@@ -35,6 +38,9 @@ import { BatchModule } from './batch/batch.module';
     //   useFactory: (configService: ConfigService) => configService.get('REDIS') || {},         // or use async method
     //   inject: [ConfigService]
     // }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'client'),
+    }),
   ],
 
   controllers: [AppController],

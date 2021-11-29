@@ -42,9 +42,6 @@
           <router-link to="/blog/keywords"
             ><a-menu-item key="3-4">关键词</a-menu-item>
           </router-link>
-          <router-link to="/blog/batch"
-            ><a-menu-item key="3-5">批量处理</a-menu-item>
-          </router-link>
         </a-sub-menu>
         <a-sub-menu key="4">
           <template #title>
@@ -76,6 +73,12 @@
         </a-sub-menu>
         <router-link to="/myinfo"></router-link>
 
+        <router-link to="/batch">
+          <a-menu-item key="6">
+            <desktop-outlined />
+            <span>批量处理</span>
+          </a-menu-item>
+        </router-link>
         <a-menu-item key="9" @click="logout">
           <file-outlined />
           <span>登出</span>

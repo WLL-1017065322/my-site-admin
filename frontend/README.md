@@ -1,7 +1,16 @@
-# Vue 3 + Vite
+- 博客系统
+- 批量系统
+  - 个人信息
+  - 博客
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
-
-## Recommended IDE Setup
-
-- [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar)
+- 用户系统
+- 日志系统
+  - 用户浏览
+  - 评论
+  - ip记录 地址信息
+  - 平均访问时长
+  - 来源,外链,直接访问
+  - 地域
+  - 前五访问页面
+  - 页面数据分析,卡顿分析
+  - 页面报错分析

@@ -9,8 +9,11 @@
         :label-col="labelCol"
         :wrapper-col="wrapperCol"
       >
-        <a-form-item label="name" name="name">
-          <a-input v-model:value="formState.name" />
+        <a-form-item label="username" name="username">
+          <a-input v-model:value="formState.username" />
+        </a-form-item>
+        <a-form-item label="account" name="account">
+          <a-input v-model:value="formState.account" />
         </a-form-item>
         <a-form-item label="gender" name="gender">
           <a-input v-model:value="formState.gender" />
@@ -41,7 +44,7 @@
         </a-form-item>
       </a-form>
       <a-row class="btns">
-        <a-button qq="primary" class="btn" @click="onSubmit">确认</a-button>
+        <a-button type="primary" class="btn" @click="onSubmit">确认</a-button>
       </a-row>
     </section>
   </main>
@@ -68,7 +71,7 @@ import "highlight.js/styles/a11y-dark.css"; //样式文件
 interface FormState {
   _id: string;
   content: string;
-  name: string;
+  username: string;
   gender: string;
   age: string;
   selfIntroduction: string;
@@ -96,8 +99,9 @@ export default defineComponent({
     const route = useRoute();
     const formState: UnwrapRef<FormState> = reactive({
       _id: "",
+      account: "",
       content: "",
-      name: "",
+      username: "",
       gender: "",
       age: "",
       selfIntroduction: "",
@@ -110,7 +114,7 @@ export default defineComponent({
       skill: "",
     });
     const rules = {
-      name: [
+      username: [
         {
           required: true,
           message: "请输入姓名",
@@ -123,16 +127,16 @@ export default defineComponent({
         .validate()
         .then(async () => {
           try {
-            if (route.query.id) {
-              const resp = await modifyMyInfo({ ...formState });
-              const { code } = resp;
-              if (code === 0) {
-                message.success("修改成功");
-              } else {
-                const { errMsg = "" } = resp;
-                message.warning(errMsg);
-              }
+            console.log(1111);
+            const resp = await modifyMyInfo({ ...formState });
+            const { code } = resp;
+            if (code === 0) {
+              message.success("修改成功");
+            } else {
+              const { errMsg = "" } = resp;
+              message.warning(errMsg);
             }
+            queryMyInfo();
           } catch (error) {
             console.log(error);
             message.error("连接超时");
@@ -146,38 +150,26 @@ export default defineComponent({
       formRef.value.resetFields();
     };
 
-    onMounted(async () => {
+    const queryMyInfo = async () => {
       try {
+        resetForm();
         const resp = await getMyInfo();
-        const { code } = resp;
-        console.log('resp',resp);
+        const { code, errMsg = "请求失败", data = {} } = resp;
+        console.log("resp", resp);
+        if (code === 0) {
+          Object.assign(formState, data);
+        } else {
+          message.warning(errMsg);
+        }
       } catch (error) {
         console.log(error);
+        message.warning(error);
       }
-    }),
-      onMounted(async () => {
-        if (route.query.id) {
-          try {
-            const resp = await modifyMyInfo({
-              id: route.query.id,
-            });
-            const { code } = resp;
-            if (code === 0) {
-              const { data } = resp;
-              // formState = Object.assign({},formState, data);\
-              Object.assign(formState, data);
-              console.log("formState", formState);
-            } else {
-              const { errMsg = "" } = resp;
-              message.warning(errMsg);
-            }
-          } catch (error) {
-            console.log(error);
-            message.error("连接超时");
-          }
-        } else {
-        }
-      });
+    };
+
+    onMounted(() => {
+      queryMyInfo();
+    });
     return {
       formRef,
       labelCol: { span: 4 },

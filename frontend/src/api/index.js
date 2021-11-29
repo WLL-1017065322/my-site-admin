@@ -15,7 +15,7 @@ const addUser = (data) => post('/users', data)
 
 
 const getMyInfo = (data) => get('/users/info', data)
-const modifyMyInfo = (data) => post('/users/info', data)
+const modifyMyInfo = (data) => put('/users/info', data)
 
 
 
