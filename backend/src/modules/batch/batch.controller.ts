@@ -6,12 +6,12 @@ import { BatchService } from './batch.service';
 @Controller('batch')
 export class BatchController {
     constructor(private readonly batchService: BatchService) {
-
     }
     @Get()
     getList() {
         console.log('__dirname', __dirname);
-        const filePath = resolve(__dirname, '../../markdown')
+        console.log('process.cwd()',process.cwd());
+        const filePath = resolve(process.cwd(), 'public/markdown')
         console.log(filePath);
         const fileLists = readdirSync(filePath)
         console.log('fileLists', fileLists);
