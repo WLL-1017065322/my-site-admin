@@ -26,7 +26,6 @@ export class BatchController {
                 }
             })
         })
-
         console.log('fileLists', fileLists);
         return '11'
     }
