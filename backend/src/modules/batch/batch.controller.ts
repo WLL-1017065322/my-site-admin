@@ -1,5 +1,5 @@
 import { Controller, Get, Res } from '@nestjs/common';
-import { readdirSync, readFile, } from 'fs';
+import { readdirSync, readFile, readFileSync, } from 'fs';
 import { join, resolve } from 'path';
 import { BatchService } from './batch.service';
 const { marked } = require('marked')
@@ -15,18 +15,37 @@ export class BatchController {
         const filePath = resolve(process.cwd(), 'public/markdown')
         console.log(filePath);
         const fileLists = readdirSync(filePath);
-        fileLists.forEach(item => {
-            readFile(`${filePath}/${item}`, (err, data) => {
-                if (err) {
-                    console.log('文件不存在');
-                }else{
-                    console.log('data',data);
-                    const str = marked(data.toString());
-                    console.log('str',str);
-                }
-            })
+        const dataList = fileLists.map(item => {
+            const itemContent = readFileSync(`${filePath}/${item}`)
+            console.log('itemContent', itemContent);
+            const newStr = itemContent.toString();
+            const regex = /(?<=\|).*?(?=\|)/g
+            const msg = newStr.match(regex)
+            return {
+                content: newStr,
+                msg: msg
+            }
+            
+            // readFileSync(`${filePath}/${item}`, (err, data) => {
+            //     if (err) {
+            //         console.log('文件不存在');
+            //     } else {
+            //         // console.log('data',data);
+            //         console.log('datatostring', data.toString());
+            //         const newStr = data.toString();
+            //         const regex = /(?<=\|).*?(?=\|)/g
+            //         const arr = newStr.match(regex)||[]
+            //         console.log('====', arr);
+            //         return {
+            //             content: arr[0]||''
+            //         }
+            //         // const str = marked(data.toString());
+            //         // console.log('str',str);
+            //     }
+            // })
         })
-        console.log('fileLists', fileLists);
-        return '11'
+        return {
+            data: dataList
+        }
     }
 }
