@@ -95,7 +95,7 @@ import "highlight.js/styles/a11y-dark.css"; //样式文件
 
 // import { useRouter } from 'vue-router';
 // import { useStore } from 'vuex'
-import { getBatch } from "../../api/index";
+import { getBatch, updateBatch } from "../../api/index";
 
 const columns = [
   { title: "内容", dataIndex: "content" },
@@ -155,8 +155,13 @@ export default {
       showModal.value = false;
     };
 
-    const update = () => {
-      console.log(update);
+    const update = async (record) => {
+      try {
+        const resp = await updateBatch(record);
+        console.log("resp", resp);
+      } catch (error) {
+        console.log(error);
+      }
     };
     return {
       columns,

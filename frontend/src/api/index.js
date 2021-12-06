@@ -20,6 +20,8 @@ export const modifyMyInfo = (data) => put('/users/info', data)
 
 // 批量
 export const getBatch = (data) => get('/batch', data)
+export const updateBatch = (data) => put('/batch', data)
+
 
 
 
