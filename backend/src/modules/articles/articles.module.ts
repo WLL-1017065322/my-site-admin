@@ -20,7 +20,8 @@ import { HashPasswordMiddleware } from "src/middlewares/hash-password.middleware
     // redis注册
   ],
   controllers: [ArticlesController],
-  providers: [ArticlesService]
+  providers: [ArticlesService],
+  // exports: [ArticlesModule]
 })
 export class ArticlesModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

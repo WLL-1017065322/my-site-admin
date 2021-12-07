@@ -1,4 +1,4 @@
-import { Controller, Get, Res } from '@nestjs/common';
+import { Controller, Get, Put, Query, Res } from '@nestjs/common';
 import { readdirSync, readFile, readFileSync, } from 'fs';
 import { join, resolve } from 'path';
 import { BatchService } from './batch.service';
@@ -25,7 +25,7 @@ export class BatchController {
                 content: newStr,
                 msg: msg
             }
-            
+
             // readFileSync(`${filePath}/${item}`, (err, data) => {
             //     if (err) {
             //         console.log('文件不存在');
@@ -47,5 +47,11 @@ export class BatchController {
         return {
             data: dataList
         }
+    }
+
+    @Put()
+    updateBatch(@Query() query) {
+        console.log('updateBath', query);
+        // return this.batchService.
     }
 }
