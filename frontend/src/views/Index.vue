@@ -43,7 +43,7 @@
             ><a-menu-item key="3-4">关键词</a-menu-item>
           </router-link>
         </a-sub-menu>
-        <a-sub-menu key="4">
+        <!-- <a-sub-menu key="4">
           <template #title>
             <span>
               <team-outlined />
@@ -56,7 +56,7 @@
           <router-link to="/comments/leavemessage">
             <a-menu-item key="4-2">留言</a-menu-item>
           </router-link>
-        </a-sub-menu>
+        </a-sub-menu> -->
         <a-sub-menu key="5">
           <template #title>
             <span>
@@ -67,9 +67,9 @@
           <router-link to="/roles/users">
             <a-menu-item key="5-1">用户管理</a-menu-item>
           </router-link>
-          <router-link to="/roles/auth">
+          <!-- <router-link to="/roles/auth">
             <a-menu-item key="5-2">权限管理</a-menu-item>
-          </router-link>
+          </router-link> -->
         </a-sub-menu>
         <router-link to="/myinfo"></router-link>
 
