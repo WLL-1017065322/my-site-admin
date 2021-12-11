@@ -13,6 +13,18 @@ export const delUser = (data) => del('/users', data)
 export const modifyUser = (data) => put('/users', data)
 export const addUser = (data) => post('/users', data)
 
+// 标签
+export const queryTagList = (data) => get('/tags', data)
+export const delTag = (data) => del('/tags', data)
+export const modifyTag = (data) => put('/tags', data)
+export const addTag = (data) => post('/tags', data)
+
+// 关键词
+export const queryKeywordList = (data) => get('/keywords', data)
+export const delKeyword = (data) => del('/keywords', data)
+export const modifyKeyword = (data) => put('/keywords', data)
+export const addKeyword = (data) => post('/keywords', data)
+
 // 个人信息
 export const getMyInfo = (data) => get('/users/info', data)
 export const modifyMyInfo = (data) => put('/users/info', data)

@@ -195,3 +195,14 @@ nest g co auth
 
 
 =======================
+报错
+ Nest can't resolve dependencies of the KeywordsService (?). Please make sure that the argument KeywordsModel at index [0] is available in the KeywordsModule context.
+
+1 @InjectModel('Keywords')是否填错
+2 db/db.module/ts 是否加上
+    {
+        name: 'Keywords', // 需要个schema名称对应
+        schema: KeywordsSchema, // 引入的schema
+        collection: 'keywords' // 数据库名称
+    }
+=========================

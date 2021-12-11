@@ -3,21 +3,22 @@
     <a-form :model="formState">
       <a-row>
         <a-col :span="6">
-          <a-form-item label="Field A">
-            <a-input
-              v-model:value="formState.fieldA"
-              placeholder="input placeholder"
-            />
+          <a-form-item label="_id">
+            <a-input v-model:value="formState._id" placeholder="请输入id" />
           </a-form-item>
         </a-col>
       </a-row>
       <div class="search">
-        <a-button>搜索</a-button>
+        <a-button type="primary" @click="query">搜索</a-button>
+        <a-button type="primary" @click="add" style="margin-left: 10px"
+          >新建</a-button
+        >
       </div>
     </a-form>
   </div>
   <div class="content">
     <a-table
+      :rowKey="(record) => record"
       class="ant-table-striped"
       size="middle"
       :columns="columns"
@@ -25,48 +26,45 @@
       :rowClassName="
         (record, index) => (index % 2 === 1 ? 'table-striped' : null)
       "
-    />
+    >
+      <template #operation="{ record }">
+        <a-button type="primary" @click="modify(record)">修改</a-button>
+        <a-button
+          type="danger"
+          @click="del(record._id)"
+          style="margin-left: 10px"
+          >删除</a-button
+        >
+      </template>
+    </a-table>
   </div>
+
+  <a-modal
+    v-model:visible="showModal"
+    :title="isAdd ? '新增' : '修改'"
+    @ok="handleOk"
+  >
+    <a-form ref="modifyRef" :model="tagState" :rules="tagRules">
+      <a-form-item label="标签" name="tag">
+        <a-input v-model:value="tagState.tag" />
+      </a-form-item>
+    </a-form>
+  </a-modal>
 </template>
 <script lang="ts">
-import { reactive, onMounted, computed, toRefs, UnwrapRef } from "vue";
+import { reactive, onMounted, computed, toRefs, UnwrapRef, ref } from "vue";
+import { queryTagList, delTag, modifyTag, addTag } from "../../api/index";
+import { message } from "ant-design-vue";
 // import { useRouter } from 'vue-router';
 // import { useStore } from 'vuex'
 const columns = [
-  { title: "Name", dataIndex: "name" },
-  { title: "Age", dataIndex: "age" },
-  { title: "Address", dataIndex: "address" },
-  { title: "operation", dataIndex: "address" },
-];
-const data = [
-  {
-    key: "1",
-    name: "John Brown",
-    age: 32,
-    address: "New York No. 1 Lake Park",
-  },
-  {
-    key: "2",
-    name: "Jim Green",
-    age: 42,
-    address: "London No. 1 Lake Park",
-  },
-  {
-    key: "3",
-    name: "Joe Black",
-    age: 32,
-    address: "Sidney No. 1 Lake Park",
-  },
-  {
-    key: "4",
-    name: "Ben Kang",
-    age: 15,
-    address: "Sidney No. 1 Lake Park",
-  },
+  { title: "_id", dataIndex: "_id", width: 500 },
+  { title: "标签", dataIndex: "tag" },
+  { title: "操作", slots: { customRender: "operation" }, width: 200 },
 ];
 interface FormState {
-  fieldA: string;
-  fieldB: string;
+  _id: string;
+  tag: string;
 }
 export default {
   components: {},
@@ -74,13 +72,107 @@ export default {
     // const router = useRouter();
     // const store = useStore();
     const formState: UnwrapRef<FormState> = reactive({
-      fieldA: "",
-      fieldB: "",
+      _id: "",
+      tag: "",
     });
+    let data = ref([]);
+    const query = async () => {
+      try {
+        const resp = await queryTagList({ _id: formState._id });
+        const { code } = resp;
+        if (code === 0) {
+          data.value = resp.data;
+        } else {
+          data.value = [];
+          message.warning(resp.errMsg);
+        }
+      } catch (error) {
+        console.log(error);
+        message.error(error);
+      }
+    };
+    let showModal = ref(false);
+    let isAdd = ref(true);
+    const add = () => {
+      tagState.tag = "";
+      showModal.value = true;
+      isAdd.value = true;
+    };
+    const modify = (record) => {
+      showModal.value = true;
+      isAdd.value = false;
+      tagState = Object.assign(tagState, record);
+    };
+
+    const del = async (_id) => {
+      try {
+        const resp = await delTag({ _id });
+        const { code } = resp;
+        if (code === 0) {
+          message.success("删除成功");
+          query();
+        } else {
+          message.warning(resp.errMsg);
+        }
+      } catch (error) {
+        console.log(error);
+        message.error(error);
+      }
+    };
+
+    let tagRules = ref({});
+    let tagState = reactive({
+      tag: "",
+    });
+    const handleOk = async () => {
+      if (isAdd.value) {
+        console.log("tagState", tagState, { ...tagState });
+        const resp = await addTag({ ...tagState });
+        console.log("addresp", resp);
+        const { code } = resp;
+        if (code === 0) {
+          message.success("新增成功");
+          showModal.value = false;
+          tagState.tag = "";
+          query();
+        }
+        try {
+        } catch (error) {
+          console.log(error);
+          message.error(error);
+        }
+      } else {
+        const resp = await modifyTag({ ...tagState });
+        console.log("modifyresp", resp);
+        const { code } = resp;
+        if (code === 0) {
+          message.success("修改成功");
+          showModal.value = false;
+          tagState.tag = "";
+          query();
+        }
+        try {
+        } catch (error) {
+          console.log(error);
+          message.error(error);
+        }
+      }
+    };
+
     return {
+      add,
+      modify,
+      del,
+      query,
+      handleOk,
+
       data,
+      showModal,
+      isAdd,
       columns,
       formState,
+      tagRules,
+      tagState,
     };
   },
 };
