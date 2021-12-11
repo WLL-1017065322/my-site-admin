@@ -15,6 +15,8 @@ import { BatchModule } from './modules/batch/batch.module';
 
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { KeywordsModule } from './keywords/keywords.module';
+import { TagsModule } from './tags/tags.module';
 // let redisOption:RedisModuleOptions = {
 //   port: 6379,
 //   name: 'management',
@@ -41,6 +43,8 @@ import { join } from 'path';
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'client'),
     }),
+    KeywordsModule,
+    TagsModule,
   ],
 
   controllers: [AppController],
