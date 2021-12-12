@@ -3,6 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ArticlesSchema } from './schema/articles.schema';
 import { KeywordsSchema } from './schema/keywords.schema';
 import { StudentsSchema } from './schema/students.schema';
+import { SystemInfoSchemal } from './schema/systemInfo';
 import { TagsSchema } from './schema/tags.schema';
 import { UserSchema } from './schema/user.schema';
 
@@ -31,6 +32,11 @@ const MONGO_MODELS = MongooseModule.forFeature([
         name: 'Tags', // 需要个schema名称对应
         schema: TagsSchema, // 引入的schema
         collection: 'tags' // 数据库名称
+    },
+    {
+        name: 'SystemInfo', // 需要个schema名称对应
+        schema: SystemInfoSchemal, // 引入的schema
+        collection: 'systemInfo' // 数据库名称
     }
 ])
 @Global()

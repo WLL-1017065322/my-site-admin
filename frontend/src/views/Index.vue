@@ -144,7 +144,7 @@ export default defineComponent({
     });
 
     const routeChange = () => {
-      console.log('route',route.matched);
+      console.log("route", route.matched);
       const menuKey: string = <string>route.meta.menuKey;
       let subMenu = "";
       if (menuKey.split("-").length > 1) {
@@ -153,6 +153,9 @@ export default defineComponent({
       }
       state.selectedKeys[0] = menuKey;
     };
+
+
+
     onMounted(routeChange);
     // watch(route, routeChange)
     const handleClick = (e: Event) => {

@@ -100,5 +100,14 @@ export class KeywordsService {
 
     }
 
-
+    async getKeywordsNumber() {
+        try {
+            const data = await this.keywordsModel.find();
+            console.log('data',data.length);
+            return data.length
+        } catch (error) {
+            console.log(error);
+            return 0
+        }
+    }
 }

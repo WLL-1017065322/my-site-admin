@@ -21,7 +21,7 @@ import { HashPasswordMiddleware } from "src/middlewares/hash-password.middleware
   ],
   controllers: [ArticlesController],
   providers: [ArticlesService],
-  // exports: [ArticlesModule]
+  exports: [ArticlesService]
 })
 export class ArticlesModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

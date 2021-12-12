@@ -2,7 +2,7 @@
  * @Author: along
  * @Date: 2021-11-02 00:12:55 
  * @Last Modified by: along
- * @Last Modified time: 2021-11-28 23:25:10
+ * @Last Modified time: 2021-12-11 22:48:18
  */
 
 import { Injectable, Logger } from "@nestjs/common";
@@ -188,6 +188,16 @@ export class UserService {
                 code: 1,
                 errMsg: error
             }
+        }
+    }
+
+    // 查询
+    async getUsersNumber() {
+        try {
+            const data = await this.userModel.find();
+            return data.length
+        } catch (error) {
+            return 0
         }
     }
 

@@ -11,7 +11,7 @@ export class TagsService {
     }
 
     async queryTags(params) {
-        console.log('param',params);
+        console.log('param', params);
         try {
             const ObjectId = mongoose.Types.ObjectId;
             console.log(params._id.trim());
@@ -102,6 +102,15 @@ export class TagsService {
             }
         }
 
+    }
+    // 查询
+    async getTagsNumber() {
+        try {
+            const data = await this.tagsModel.find();
+            return data.length
+        } catch (error) {
+            return 0
+        }
     }
 
 }

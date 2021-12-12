@@ -17,6 +17,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { KeywordsModule } from './modules/keywords/keywords.module';
 import { TagsModule } from './modules/tags/tags.module';
+import { InfoModule } from './modules/info/info.module';
 // let redisOption:RedisModuleOptions = {
 //   port: 6379,
 //   name: 'management',
@@ -45,6 +46,7 @@ import { TagsModule } from './modules/tags/tags.module';
     }),
     KeywordsModule,
     TagsModule,
+    InfoModule,
   ],
 
   controllers: [AppController],

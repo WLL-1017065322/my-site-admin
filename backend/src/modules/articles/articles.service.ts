@@ -2,7 +2,7 @@
  * @Author: along
  * @Date: 2021-11-02 00:12:55 
  * @Last Modified by: along
- * @Last Modified time: 2021-12-11 16:21:10
+ * @Last Modified time: 2021-12-11 22:46:39
  */
 
 import { Injectable, Logger } from "@nestjs/common";
@@ -80,7 +80,7 @@ export class ArticlesService {
         // return "111"
         try {
             const newArticle = new this.articlesModel(article)
-            console.log('newArticle',newArticle);
+            console.log('newArticle', newArticle);
             await newArticle.save()
             return {
                 code: 0,
@@ -139,4 +139,13 @@ export class ArticlesService {
 
     }
 
+    // 文章数量
+    async getArticlesNumber() {
+        try {
+            const data = await this.articlesModel.find();
+            return data.length
+        } catch (error) {
+            return 0
+        }
+    }
 }

@@ -35,7 +35,8 @@ export const getBatch = (data) => get('/batch', data)
 export const updateBatch = (data) => put('/batch', data)
 
 
-
+// 系统信息
+export const getSysMsg = (data) => get('/info', data)
 
 
 export const login = (data) => post('/auth/login', data)
