@@ -18,6 +18,7 @@ import { join } from 'path';
 import { KeywordsModule } from './modules/keywords/keywords.module';
 import { TagsModule } from './modules/tags/tags.module';
 import { InfoModule } from './modules/info/info.module';
+import { BlogModule } from './modules/blog/blog.module';
 // let redisOption:RedisModuleOptions = {
 //   port: 6379,
 //   name: 'management',
@@ -47,6 +48,7 @@ import { InfoModule } from './modules/info/info.module';
     KeywordsModule,
     TagsModule,
     InfoModule,
+    BlogModule,
   ],
 
   controllers: [AppController],

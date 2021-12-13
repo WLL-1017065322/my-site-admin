@@ -2,7 +2,7 @@
  * @Author: along
  * @Date: 2021-11-02 00:12:55 
  * @Last Modified by: along
- * @Last Modified time: 2021-12-11 22:46:39
+ * @Last Modified time: 2021-12-13 22:19:54
  */
 
 import { Injectable, Logger } from "@nestjs/common";
@@ -47,16 +47,16 @@ export class ArticlesService {
     }
     // 查询列表  Types.ObjectId(params._id);
     async queryAll(params) {
+        console.log('params', params);
         try {
             const ObjectId = mongoose.Types.ObjectId;
-            console.log(params._id.trim());
-            if (params && params._id.trim() !== '' && !ObjectId.isValid(params._id)) {
+            if (params && params._id && params._id.trim() !== '' && !ObjectId.isValid(params._id)) {
                 return {
                     code: 1,
                     errMsg: `oid格式不正确`
                 }
             }
-            if (params && params._id.trim() !== '') {
+            if (params && params._id && params._id.trim() !== '') {
                 params._id = new ObjectId(params._id);
             } else {
                 params = {}
