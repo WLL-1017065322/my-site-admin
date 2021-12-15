@@ -13,7 +13,7 @@ export class BlogController {
 
     @Get()
     @ApiOperation({
-        summary: "获取用户列表"
+        summary: "获取文章列表"
     })
     getList(@Query() articleDto: Articles) {
         console.log('获取文章列表', articleDto);
@@ -22,7 +22,7 @@ export class BlogController {
 
     @Get(":id")
     @ApiOperation({
-        summary: "获取用户列表"
+        summary: "获取文章具体信息"
     })
     getDetail(@Param() params) {
         console.log(params.id);
