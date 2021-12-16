@@ -9,6 +9,7 @@ import { ArticlesModule } from '../articles/articles.module';
 @Module({
   imports: [KeywordsModule, TagsModule, UserModule, ArticlesModule],
   providers: [InfoService],
-  controllers: [InfoController]
+  controllers: [InfoController],
+  exports: [InfoService]
 })
 export class InfoModule { }

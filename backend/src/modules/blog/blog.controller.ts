@@ -20,7 +20,17 @@ export class BlogController {
         return this.articleService.queryAll(articleDto)
     }
 
-    @Get(":id")
+    @Get('home')
+    @ApiOperation({
+        summary: "获取首页信息"
+    })
+    getHome(@Query() query) {
+        console.log('获取首页信息', query);
+        console.log(111);
+        return this.blogService.queryHome(query)
+    }
+
+    @Get("detail/:id")
     @ApiOperation({
         summary: "获取文章具体信息"
     })
@@ -28,4 +38,7 @@ export class BlogController {
         console.log(params.id);
         return this.articleService.queryDetail(params.id);
     }
+
+
+
 }

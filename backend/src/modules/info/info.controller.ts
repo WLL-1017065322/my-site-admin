@@ -1,4 +1,4 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Put } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { InfoService } from './info.service';
 
@@ -20,6 +20,14 @@ export class InfoController {
         summary: '添加信息'
     })
     createSystemInfo() {
-        return this.infoService.createSystemInfo({ createTime: '20211111' })
+        return this.infoService.createSystemInfo({ createTime: '20211111', author: 'along', motto: '欲买桂花同载酒，终不似，少年游。' })
+    }
+
+    @Put()
+    @ApiOperation({
+        summary: '修改信息'
+    })
+    updateSystemInfo(@Body() body) {
+        return this.infoService.updateSystemInfo(body)
     }
 }

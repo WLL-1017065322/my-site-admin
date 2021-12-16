@@ -23,7 +23,8 @@ export class InfoService {
         const tagNums = await this.tagsService.getTagsNumber();
         // const runTime = await this.keywordsService.getKeywordsNumber();
         const systemInfo = await this.systemModel.findOne();
-        const createTime = systemInfo.createTime;
+        const { createTime = '', author = "", motto = "", qq = "", wechat = "" } = systemInfo;
+
         console.log('keywordsNums', keywordsNums);
         return {
             code: 0,
@@ -32,7 +33,11 @@ export class InfoService {
                 articleNums,
                 userNums,
                 tagNums,
-                createTime
+                createTime,
+                author,
+                motto,
+                qq,
+                wechat,
             }
         }
     }
@@ -42,6 +47,24 @@ export class InfoService {
         return {
             code: 0,
             data: data
+        }
+    }
+
+    async updateSystemInfo(body) {
+        try {
+            const systemInfo = await this.systemModel.findOne()
+            console.log('systemInfo', systemInfo);
+            Object.assign(systemInfo, body)
+            await systemInfo.save()
+            return {
+                code: 0
+            }
+        } catch (error) {
+            console.log(error);
+            return {
+                code: 1,
+                errMsg: error
+            }
         }
     }
 
