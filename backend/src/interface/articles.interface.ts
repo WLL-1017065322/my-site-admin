@@ -37,6 +37,11 @@ export class Articles extends Document {
     @Prop()
     readonly keywords: String;
     @Prop()
+    @ApiProperty({
+        description: "类型",
+        example: 'code',
+        required: false,
+    })
     readonly type: String;
     @Prop()
     readonly pageView: String;

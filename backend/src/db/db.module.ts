@@ -5,6 +5,7 @@ import { KeywordsSchema } from './schema/keywords.schema';
 import { StudentsSchema } from './schema/students.schema';
 import { SystemInfoSchemal } from './schema/systemInfo';
 import { TagsSchema } from './schema/tags.schema';
+import { TypesSchema } from './schema/types.schema';
 import { UserSchema } from './schema/user.schema';
 
 const MONGO_MODELS = MongooseModule.forFeature([
@@ -37,7 +38,12 @@ const MONGO_MODELS = MongooseModule.forFeature([
         name: 'SystemInfo', // 需要个schema名称对应
         schema: SystemInfoSchemal, // 引入的schema
         collection: 'systemInfo' // 数据库名称
-    }
+    },
+    {
+        name: 'Types', // 需要个schema名称对应
+        schema: TypesSchema, // 引入的schema
+        collection: 'types' // 数据库名称
+    },
 ])
 @Global()
 @Module({

@@ -42,6 +42,9 @@
           <router-link to="/blog/keywords"
             ><a-menu-item key="3-4">关键词</a-menu-item>
           </router-link>
+          <router-link to="/blog/types"
+            ><a-menu-item key="3-5">分类</a-menu-item>
+          </router-link>
         </a-sub-menu>
         <!-- <a-sub-menu key="4">
           <template #title>

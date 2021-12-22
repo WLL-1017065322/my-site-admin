@@ -56,10 +56,13 @@ export class ArticlesService {
                     errMsg: `oid格式不正确`
                 }
             }
+            if (params && params._id === '') {
+                delete params._id
+            }
             if (params && params._id && params._id.trim() !== '') {
                 params._id = new ObjectId(params._id);
             } else {
-                params = {}
+                params = { ...params }
             }
             console.log(params, 'params');
             const data = await this.articlesModel.find(params);

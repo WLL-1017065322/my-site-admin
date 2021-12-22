@@ -11,6 +11,8 @@ import BlogList from './views/Blog/List.vue'
 import BlogTags from './views/Blog/Tags.vue'
 import BlogKeywords from './views/Blog/Keywords.vue'
 import Batch from './views/Batch/Batch.vue'
+import BlogTypes from './views/Blog/Types.vue'
+
 
 
 
@@ -42,6 +44,7 @@ const router = createRouter({
                 { path: 'blog/detail', name: 'BlogDetail', component: BlogDetail, meta: { menuKey: '3-2' } },
                 { path: 'blog/tags', name: 'BlogTags', component: BlogTags, meta: { menuKey: '3-3' } },
                 { path: 'blog/keywords', name: 'BlogKeywords', component: BlogKeywords, meta: { menuKey: '3-4' } },
+                { path: 'blog/types', name: 'BlogTypes', component: BlogTypes, meta: { menuKey: '3-5' } },
 
 
                 { path: 'comments/comment', name: 'Comment', component: Comment, meta: { menuKey: '4-1' } },

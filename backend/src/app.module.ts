@@ -19,6 +19,9 @@ import { KeywordsModule } from './modules/keywords/keywords.module';
 import { TagsModule } from './modules/tags/tags.module';
 import { InfoModule } from './modules/info/info.module';
 import { BlogModule } from './modules/blog/blog.module';
+import { TypesController } from './modules/types/types.controller';
+import { TypesService } from './modules/types/types.service';
+import { TypesModule } from './modules/types/types.module';
 // let redisOption:RedisModuleOptions = {
 //   port: 6379,
 //   name: 'management',
@@ -49,9 +52,10 @@ import { BlogModule } from './modules/blog/blog.module';
     TagsModule,
     InfoModule,
     BlogModule,
+    TypesModule,
   ],
 
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, TypesController],
+  providers: [AppService, TypesService],
 })
 export class AppModule { }

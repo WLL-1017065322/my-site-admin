@@ -25,6 +25,13 @@ export const delKeyword = (data) => del('/keywords', data)
 export const modifyKeyword = (data) => put('/keywords', data)
 export const addKeyword = (data) => post('/keywords', data)
 
+// 类型
+export const queryTypeList = (data) => get('/types', data)
+export const delType = (data) => del('/types', data)
+export const modifyType = (data) => put('/types', data)
+export const addType = (data) => post('/types', data)
+
+
 // 个人信息
 export const getMyInfo = (data) => get('/users/info', data)
 export const modifyMyInfo = (data) => put('/users/info', data)
