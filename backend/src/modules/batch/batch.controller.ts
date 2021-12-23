@@ -10,20 +10,35 @@ export class BatchController {
     }
     @Get()
     getList() {
-        console.log('__dirname', __dirname);
-        console.log('process.cwd()', process.cwd());
-        const filePath = resolve(process.cwd(), 'public/markdown')
-        console.log(filePath);
+        // console.log('__dirname', __dirname);
+        // console.log('process.cwd()', process.cwd());
+        // const filePath = resolve(process.cwd(), 'public/markdown')
+        const filePath = resolve(process.cwd(), 'public/blog')
+        // console.log(filePath);
         const fileLists = readdirSync(filePath);
         const dataList = fileLists.map(item => {
-            const itemContent = readFileSync(`${filePath}/${item}`)
-            console.log('itemContent', itemContent);
-            const newStr = itemContent.toString();
-            const regex = /(?<=\|).*?(?=\|)/g
-            const msg = newStr.match(regex)
+            console.log('item', item);
+            const splitList = item.split('.')
+            // console.log('splitList', splitList);
+            let newStr, msg, title
+            if (splitList[splitList.length - 1] === 'md') {
+                title = item.replace('.md', '')
+                const itemContent = readFileSync(`${filePath}/${item}`)
+                // console.log('itemContent', itemContent);
+                newStr = itemContent.toString();
+                // const regex = /(?<=\|).*?(?=\|)/g
+                // const regex =  /(?<=([^_^]:)).*?(?=([^_^]))/g
+                const regex = /(?<=\[\^_\^\]:).*?(?=\[\^_\^\])/g
+                const arr = newStr.match(regex)
+                console.log('msg', arr);
+                if (arr && arr.length > 0) {
+                    msg = JSON.parse(arr[0])
+                }
+            }
             return {
                 content: newStr,
-                msg: msg
+                msg: msg,
+                title
             }
 
             // readFileSync(`${filePath}/${item}`, (err, data) => {

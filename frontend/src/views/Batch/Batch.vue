@@ -81,7 +81,7 @@
       </div>
     </section>
 
-    <a-modal v-model:visible="showModal" @ok="handleOk">
+    <a-modal v-model:visible="showModal" @ok="handleOk" width="1000px">
       <div ref="markdownBatch" v-highlight></div>
     </a-modal>
   </main>
@@ -98,20 +98,21 @@ import "highlight.js/styles/a11y-dark.css"; //样式文件
 import { getBatch, updateBatch } from "../../api/index";
 
 const columns = [
-  { title: "内容", dataIndex: "content" },
-  { title: "信息", dataIndex: "msg" },
-  { title: "操作", slots: { customRender: "operation" } },
+  { title: "标题", dataIndex: "title", width: 300 },
+  { title: "内容", dataIndex: "content", ellipsis: true },
+  { title: "操作", slots: { customRender: "operation" }, width: 200 },
 ];
 export default {
   components: {},
   directives: {
     highlight: {
       updated(el) {
+        console.log(111);
         // el.focus();
-        let blocks = el.querySelectorAll("pre code");
-        blocks.forEach((block) => {
-          highlight.highlightBlock(block);
-        });
+        // let blocks = el.querySelectorAll("pre code");
+        // blocks.forEach((block) => {
+        //   highlight.highlightBlock(block);
+        // });
       },
     },
   },
@@ -147,9 +148,14 @@ export default {
       // console.log("converter", converter);
       // const html = converter.makeHtml(formState.content);
       const html = converter.makeHtml(content);
-      console.log("html", html);
-      console.log("markdownRef", markdownRef);
+      // console.log("html", html);
+      // console.log("markdownRef", markdownRef);
       markdownRef.innerHTML = html;
+      // console.log('markdownRef',markdownRef);
+      let blocks = markdownRef.querySelectorAll("pre code");
+      blocks.forEach((block) => {
+        highlight.highlightBlock(block);
+      });
     };
     const handleOk = () => {
       showModal.value = false;
