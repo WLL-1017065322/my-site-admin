@@ -16,27 +16,30 @@ export class BatchController {
         const filePath = resolve(process.cwd(), 'public/blog')
         // console.log(filePath);
         const fileLists = readdirSync(filePath);
-        const dataList = fileLists.map(item => {
-            console.log('item', item);
+        const dataList = fileLists.map((item, index) => {
+            // console.log('item', item);
             const splitList = item.split('.')
             // console.log('splitList', splitList);
-            let newStr, msg, title
+            let newStr, msg, title, newStrReplace
             if (splitList[splitList.length - 1] === 'md') {
                 title = item.replace('.md', '')
                 const itemContent = readFileSync(`${filePath}/${item}`)
                 // console.log('itemContent', itemContent);
                 newStr = itemContent.toString();
+                newStrReplace = newStr.replace(/(\[\^_\^\]:).*?(\[\^_\^\])/g, '')
                 // const regex = /(?<=\|).*?(?=\|)/g
                 // const regex =  /(?<=([^_^]:)).*?(?=([^_^]))/g
                 const regex = /(?<=\[\^_\^\]:).*?(?=\[\^_\^\])/g
                 const arr = newStr.match(regex)
-                console.log('msg', arr);
+                if (index === 0) {
+                    console.log('msg', arr);
+                }
                 if (arr && arr.length > 0) {
                     msg = JSON.parse(arr[0])
                 }
             }
             return {
-                content: newStr,
+                content: newStrReplace,
                 msg: msg,
                 title
             }
