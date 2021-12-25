@@ -40,7 +40,7 @@
           </div>
           <div class="blog-list">
             <div class="blog-title" style="margin-bottom: 10px">
-              <span>博客列表</span>
+              <span>博客列表({{ number }}篇)</span>
               <a-button
                 type="primary"
                 style="margin-left: 20px"
@@ -97,6 +97,7 @@ import "highlight.js/styles/a11y-dark.css"; //样式文件
 // import { useRouter } from 'vue-router';
 // import { useStore } from 'vuex'
 import { getBatch, updateBatch } from "../../api/index";
+import { message } from "ant-design-vue";
 
 const columns = [
   { title: "标题", dataIndex: "title", width: 200, ellipsis: true },
@@ -130,11 +131,18 @@ export default {
     const obj = reactive({
       data: [],
     });
-
+    let number = ref(0);
     const blogQuery = async () => {
       const resp = await getBatch();
-      obj.data = resp.data;
-      console.log(resp);
+      const { code, data = {} } = resp;
+      if (code === 0) {
+        obj.data = data;
+        number = data.number;
+      } else {
+        obj.data = [];
+        number = 0;
+        message.warning(resp.errMsg);
+      }
     };
 
     const showModal = ref(false);
@@ -180,6 +188,7 @@ export default {
     return {
       columns,
       showModal,
+      number,
       ...toRefs(obj),
       blogQuery,
       preview,
