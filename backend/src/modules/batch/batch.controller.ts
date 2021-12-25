@@ -40,7 +40,7 @@ export class BatchController {
             }
             return {
                 content: newStrReplace,
-                msg: msg,
+                ...msg,
                 title
             }
 

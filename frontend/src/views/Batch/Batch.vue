@@ -5,40 +5,41 @@
       <div style="background: #ececec; padding: 30px">
         <a-card title="个人信息" :bordered="false" style="width: 100%">
           <div>
-            <span>上传</span>
-            <div class="upload">
+            <span>上传：</span>
+            <span class="upload">
               <a-upload v-model:file-list="fileList">
                 <a-button>
                   <upload-outlined></upload-outlined>
                   Upload
                 </a-button>
               </a-upload>
-            </div>
+            </span>
           </div>
 
-          <p>列表</p>
-          <p>
+          <span>个人信息显示：</span>
+          <span>
             <a-button type="primary">数据库更新</a-button>
-          </p>
+          </span>
+          <div></div>
         </a-card>
       </div>
     </section>
     <section>
       <div style="background: #ececec; padding: 30px">
         <a-card title="博客" :bordered="false" style="width: 100%">
-          <div>
-            <span>上传</span>
-            <div class="upload">
+          <div style="margin-bottom: 10px">
+            <span>上传： </span>
+            <span class="upload">
               <a-upload v-model:file-list="fileList">
                 <a-button>
                   <upload-outlined></upload-outlined>
                   Upload
                 </a-button>
               </a-upload>
-            </div>
+            </span>
           </div>
           <div class="blog-list">
-            <div class="blog-title">
+            <div class="blog-title" style="margin-bottom: 10px">
               <span>博客列表</span>
               <a-button
                 type="primary"
@@ -98,8 +99,15 @@ import "highlight.js/styles/a11y-dark.css"; //样式文件
 import { getBatch, updateBatch } from "../../api/index";
 
 const columns = [
-  { title: "标题", dataIndex: "title", width: 300 },
+  { title: "标题", dataIndex: "title", width: 200, ellipsis: true },
+  { title: "作者", dataIndex: "author", width: 150 },
+  { title: "类型", dataIndex: "type", width: 150 },
+  { title: "关键词", dataIndex: "keyword", width: 150 },
+  { title: "标签", dataIndex: "tag", width: 150 },
+
+  { title: "时间", dataIndex: "time", width: 150 },
   { title: "内容", dataIndex: "content", ellipsis: true },
+
   { title: "操作", slots: { customRender: "operation" }, width: 200 },
 ];
 export default {
