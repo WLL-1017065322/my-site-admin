@@ -17,7 +17,8 @@ export class BatchController {
             const filePath = resolve(process.cwd(), 'public/blog')
             // console.log(filePath);
             const fileLists = readdirSync(filePath);
-            const dataList = fileLists.map((item, index) => {
+            const dataList = [];
+            fileLists.forEach((item, index) => {
                 // console.log('item', item);
                 const splitList = item.split('.')
                 // console.log('splitList', splitList);
@@ -38,12 +39,13 @@ export class BatchController {
                     if (arr && arr.length > 0) {
                         msg = JSON.parse(arr[0])
                     }
+                    dataList.push({
+                        content: newStrReplace,
+                        ...msg,
+                        title
+                    })
                 }
-                return {
-                    content: newStrReplace,
-                    ...msg,
-                    title
-                }
+
                 // readFileSync(`${filePath}/${item}`, (err, data) => {
                 //     if (err) {
                 //         console.log('文件不存在');

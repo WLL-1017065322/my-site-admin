@@ -30,7 +30,7 @@
           <div style="margin-bottom: 10px">
             <span>上传： </span>
             <span class="upload">
-              <a-upload v-model:file-list="fileList">
+              <a-upload v-model:file-list="fileList" @change="handleChange">
                 <a-button>
                   <upload-outlined></upload-outlined>
                   Upload
@@ -40,7 +40,7 @@
           </div>
           <div class="blog-list">
             <div class="blog-title" style="margin-bottom: 10px">
-              <span>博客列表({{ number }}篇)</span>
+              <span>博客列表{{ number > 0 ? `(${number}篇)` : "" }}</span>
               <a-button
                 type="primary"
                 style="margin-left: 20px"
@@ -87,7 +87,7 @@
     </a-modal>
   </main>
 </template>
-<script>
+<script lang="ts">
 import { reactive, ref, onMounted, computed, toRefs, nextTick } from "vue";
 
 import showdown from "showdown";
@@ -98,6 +98,18 @@ import "highlight.js/styles/a11y-dark.css"; //样式文件
 // import { useStore } from 'vuex'
 import { getBatch, updateBatch } from "../../api/index";
 import { message } from "ant-design-vue";
+
+interface FileItem {
+  uid: string;
+  name?: string;
+  status?: string;
+  response?: string;
+  url?: string;
+}
+interface FileInfo {
+  file: FileItem;
+  fileList: FileItem[];
+}
 
 const columns = [
   { title: "标题", dataIndex: "title", width: 200, ellipsis: true },
@@ -134,13 +146,13 @@ export default {
     let number = ref(0);
     const blogQuery = async () => {
       const resp = await getBatch();
-      const { code, data = {} } = resp;
+      const { code, data = [] } = resp;
       if (code === 0) {
         obj.data = data;
-        number = data.number;
+        number.value = data.length;
       } else {
         obj.data = [];
-        number = 0;
+        number.value = 0;
         message.warning(resp.errMsg);
       }
     };
@@ -185,6 +197,17 @@ export default {
         console.log(error);
       }
     };
+
+    const handleChange = (info: FileInfo) => {
+      if (info.file.status !== "uploading") {
+        console.log(info.file, info.fileList);
+      }
+      if (info.file.status === "done") {
+        message.success(`${info.file.name} file uploaded successfully`);
+      } else if (info.file.status === "error") {
+        message.error(`${info.file.name} file upload failed.`);
+      }
+    };
     return {
       columns,
       showModal,
@@ -195,6 +218,7 @@ export default {
       markdownBatch,
       handleOk,
       update,
+      handleChange,
     };
   },
 };
