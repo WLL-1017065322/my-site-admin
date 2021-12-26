@@ -1,4 +1,5 @@
-import { Controller, Get, Put, Query, Res } from '@nestjs/common';
+import { Body, Controller, Get, Post, Put, Query, Req, Res, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { AnyFilesInterceptor, FileFieldsInterceptor, FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { readdirSync, readFile, readFileSync, } from 'fs';
 import { join, resolve } from 'path';
 import { BatchService } from './batch.service';
@@ -78,6 +79,25 @@ export class BatchController {
         }
 
     }
+    @Post('upload')
+    // @UseInterceptors(FileInterceptor('file'))
+    // uploadFile(@UploadedFile() file) {
+    //     console.log('file', file);
+    // }
+    @Post('upload')
+    @UseInterceptors(AnyFilesInterceptor())
+    uploadFile(@UploadedFiles() files) {
+      console.log('files',files);
+    }
+
+    // @Post('upload')
+    // @UseInterceptors(FileFieldsInterceptor([
+    //     { name: 'avatar', maxCount: 1 },
+    //     { name: 'background', maxCount: 1 },
+    // ]))
+    // uploadFile(@UploadedFiles() files) {
+    //     console.log(files);
+    // }
 
     @Put()
     updateBatch(@Query() query) {

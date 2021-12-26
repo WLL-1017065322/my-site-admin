@@ -4,10 +4,10 @@
     <section>
       <div style="background: #ececec; padding: 30px">
         <a-card title="个人信息" :bordered="false" style="width: 100%">
-          <div>
+          <div style="margin-bottom: 10px">
             <span>上传：</span>
             <span class="upload">
-              <a-upload v-model:file-list="fileList">
+              <a-upload v-model:file-list="uploadMyInfoList">
                 <a-button>
                   <upload-outlined></upload-outlined>
                   Upload
@@ -30,7 +30,13 @@
           <div style="margin-bottom: 10px">
             <span>上传： </span>
             <span class="upload">
-              <a-upload v-model:file-list="fileList" @change="handleChange">
+              <a-upload
+                v-model:file-list="fileList"
+                :showUploadList="true"
+                @change="handleChange"
+                :multiple="true"
+                action="/api/batch/upload"
+              >
                 <a-button>
                   <upload-outlined></upload-outlined>
                   Upload
@@ -199,6 +205,7 @@ export default {
     };
 
     const handleChange = (info: FileInfo) => {
+      console.log("========", info);
       if (info.file.status !== "uploading") {
         console.log(info.file, info.fileList);
       }
@@ -208,10 +215,14 @@ export default {
         message.error(`${info.file.name} file upload failed.`);
       }
     };
+    const fileList = ref([]);
+    const uploadMyInfoList = ref([]);
     return {
       columns,
       showModal,
       number,
+      fileList,
+      uploadMyInfoList,
       ...toRefs(obj),
       blogQuery,
       preview,
