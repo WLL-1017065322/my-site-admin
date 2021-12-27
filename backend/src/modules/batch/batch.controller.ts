@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post, Put, Query, Req, Res, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
 import { AnyFilesInterceptor, FileFieldsInterceptor, FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
-import { readdirSync, readFile, readFileSync, } from 'fs';
+import { readdirSync, readFile, readFileSync, writeFile } from 'fs';
 import { join, resolve } from 'path';
 import { BatchService } from './batch.service';
 const { marked } = require('marked')
@@ -79,7 +79,7 @@ export class BatchController {
         }
 
     }
-    @Post('upload')
+    // @Post('upload')
     // @UseInterceptors(FileInterceptor('file'))
     // uploadFile(@UploadedFile() file) {
     //     console.log('file', file);
@@ -87,8 +87,45 @@ export class BatchController {
     @Post('upload')
     @UseInterceptors(AnyFilesInterceptor())
     uploadFile(@UploadedFiles() files) {
-      console.log('files',files);
+        const filePath = resolve(process.cwd(), 'public/blog')
+        writeFile(`${filePath}/${files[0].originalname}`, files[0].buffer, (err) => {
+            if (err) {
+                console.log('err', err);
+                return {
+                    code: 1,
+                    errMsg: err
+                }
+            } else {
+                console.log('写入成功');
+                return {
+                    code: 0,
+                }
+            }
+        })
     }
+
+    @Post('myinfo')
+    @UseInterceptors(AnyFilesInterceptor())
+    uploadMyInfo(@UploadedFiles() files) {
+        const filePath = resolve(process.cwd(), 'public/blog')
+        writeFile(`${filePath}/${files[0].originalname}`, files[0].buffer, (err) => {
+            if (err) {
+                console.log('err', err);
+                return {
+                    code: 1,
+                    errMsg: err
+                }
+            } else {
+                console.log('写入成功');
+                return {
+                    code: 0,
+                }
+            }
+        })
+    }
+
+
+
 
     // @Post('upload')
     // @UseInterceptors(FileFieldsInterceptor([
