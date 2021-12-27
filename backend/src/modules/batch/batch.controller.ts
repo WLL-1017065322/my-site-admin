@@ -79,6 +79,10 @@ export class BatchController {
         }
 
     }
+
+
+
+
     // @Post('upload')
     // @UseInterceptors(FileInterceptor('file'))
     // uploadFile(@UploadedFile() file) {
@@ -104,10 +108,42 @@ export class BatchController {
         })
     }
 
+
+
+    @Get('/myinfo')
+    getMyInfo(@Query() query) {
+        // console.log('__dirname', __dirname);
+        // console.log('process.cwd()', process.cwd());
+        // const filePath = resolve(process.cwd(), 'public/markdown')
+        if (!query.fileName) return {
+            code: 1,
+            errMsg: '无该文件'
+        }
+        let fileName = query.fileName
+        try {
+            const filePath = resolve(process.cwd(), `public/myinfo/${fileName}`)
+            // const fileLists = readdirSync(filePath);
+            const fileContent = readFileSync(filePath)
+            console.log('fileContent', fileContent);
+            return {
+                code: 0,
+                data: fileContent.toString()
+            }
+        } catch (error) {
+            console.log(error);
+            return {
+                code: 1,
+                errMsg: error
+
+            }
+        }
+
+    }
+
     @Post('myinfo')
     @UseInterceptors(AnyFilesInterceptor())
     uploadMyInfo(@UploadedFiles() files) {
-        const filePath = resolve(process.cwd(), 'public/blog')
+        const filePath = resolve(process.cwd(), 'public/myinfo')
         writeFile(`${filePath}/${files[0].originalname}`, files[0].buffer, (err) => {
             if (err) {
                 console.log('err', err);

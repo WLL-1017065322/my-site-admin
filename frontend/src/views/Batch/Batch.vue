@@ -7,7 +7,12 @@
           <div style="margin-bottom: 10px">
             <span>上传：</span>
             <span class="upload">
-              <a-upload v-model:file-list="uploadMyInfoList">
+              <a-upload
+                v-model:file-list="uploadMyInfoList"
+                :showUploadList="true"
+                :multiple="true"
+                action="/api/batch/myinfo"
+              >
                 <a-button>
                   <upload-outlined></upload-outlined>
                   Upload
@@ -16,11 +21,19 @@
             </span>
           </div>
 
-          <span>个人信息显示：</span>
+          <span>个人信息：</span>
           <span>
+            <a-button
+              type="primary"
+              @click="myInfoQuery"
+              style="margin-right: 20px"
+              >查询</a-button
+            >
             <a-button type="primary">数据库更新</a-button>
           </span>
-          <div></div>
+          <div ref="myInfoRef">
+            <!-- {{ myInfoData }} -->
+          </div>
         </a-card>
       </div>
     </section>
@@ -102,7 +115,7 @@ import "highlight.js/styles/a11y-dark.css"; //样式文件
 
 // import { useRouter } from 'vue-router';
 // import { useStore } from 'vuex'
-import { getBatch, updateBatch } from "../../api/index";
+import { getBatch, updateBatch, getBatchMyInfo } from "../../api/index";
 import { message } from "ant-design-vue";
 
 interface FileItem {
@@ -173,12 +186,13 @@ export default {
       console.log("markdownBatch1", markdownBatch);
       showModal.value = true;
       await nextTick();
-      initMarkDown(record.content);
+      initMarkDown(record.content, markdownBatch);
     };
     const markdownBatch = ref();
-    const initMarkDown = (content) => {
+    const initMarkDown = (content, Ref) => {
+      console.log("Ref", Ref);
       const converter = new showdown.Converter();
-      const markdownRef = markdownBatch.value;
+      const markdownRef = Ref.value;
       // console.log("converter", converter);
       // const html = converter.makeHtml(formState.content);
       const html = converter.makeHtml(content);
@@ -217,12 +231,37 @@ export default {
     };
     const fileList = ref([]);
     const uploadMyInfoList = ref([]);
+
+    let myInfoData = ref("");
+    const myInfoRef = ref();
+    const myInfoQuery = async () => {
+      try {
+        const resp = await getBatchMyInfo({
+          fileName: "myInfo.md",
+        });
+        const { code, errMsg } = resp;
+        if (code === 0) {
+          console.log("resp.data", resp.data);
+          myInfoData.value = resp.data;
+
+          console.log("myInfoRef", myInfoRef);
+          initMarkDown(myInfoData.value, myInfoRef);
+        } else {
+          message.warning(errMsg);
+        }
+      } catch (error) {
+        message.error(error);
+        console.log(error);
+      }
+    };
     return {
       columns,
       showModal,
       number,
       fileList,
       uploadMyInfoList,
+      myInfoData,
+      myInfoRef,
       ...toRefs(obj),
       blogQuery,
       preview,
@@ -230,6 +269,7 @@ export default {
       handleOk,
       update,
       handleChange,
+      myInfoQuery,
     };
   },
 };
