@@ -29,7 +29,7 @@
               style="margin-right: 20px"
               >查询</a-button
             >
-            <a-button type="primary">数据库更新</a-button>
+            <!-- <a-button type="primary">数据库更新</a-button> -->
           </span>
           <div ref="myInfoRef">
             <!-- {{ myInfoData }} -->
