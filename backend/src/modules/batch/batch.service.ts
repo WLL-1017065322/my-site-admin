@@ -11,4 +11,9 @@ export class BatchService {
     //     // return "111"
     //     return await this.articlesModel.find().exec();
     // }
+    async updateBatch() {
+        return {
+
+        }
+    }
 }

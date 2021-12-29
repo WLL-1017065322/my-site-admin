@@ -175,6 +175,7 @@ export class BatchController {
     @Put()
     updateBatch(@Query() query) {
         console.log('updateBath', query);
+        this.batchService.updateBatch(query)
         // return this.batchService.
     }
 }
