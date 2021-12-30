@@ -31,9 +31,7 @@
             >
             <!-- <a-button type="primary">数据库更新</a-button> -->
           </span>
-          <div ref="myInfoRef">
-            <!-- {{ myInfoData }} -->
-          </div>
+          <div ref="myInfoRef"></div>
         </a-card>
       </div>
     </section>
