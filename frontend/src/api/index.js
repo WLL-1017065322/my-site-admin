@@ -41,6 +41,8 @@ export const modifyMyInfo = (data) => put('/users/info', data)
 export const getBatch = (data) => get('/batch', data)
 export const updateBatch = (data) => put('/batch', data)
 export const getBatchMyInfo = (data) => get('/batch/myinfo', data)
+export const updateBatchAll = (data) => put('/batch/all', data)
+
 
 
 

@@ -64,7 +64,10 @@
                 @click="blogQuery"
                 >查询</a-button
               >
-              <a-button type="primary" style="margin-left: 20px"
+              <a-button
+                type="primary"
+                style="margin-left: 20px"
+                @click="updateAll"
                 >全部更新</a-button
               >
             </div>
@@ -113,7 +116,12 @@ import "highlight.js/styles/a11y-dark.css"; //样式文件
 
 // import { useRouter } from 'vue-router';
 // import { useStore } from 'vuex'
-import { getBatch, updateBatch, getBatchMyInfo } from "../../api/index";
+import {
+  getBatch,
+  updateBatch,
+  getBatchMyInfo,
+  updateBatchAll,
+} from "../../api/index";
 import { message } from "ant-design-vue";
 
 interface FileItem {
@@ -210,7 +218,23 @@ export default {
     const update = async (record) => {
       try {
         const resp = await updateBatch(record);
-        console.log("resp", resp);
+        const { code } = resp;
+        if (code === 0) {
+          message.success("更新成功");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    const updateAll = async () => {
+      try {
+        let resp = await updateBatchAll();
+        const { code } = resp;
+        if (code === 0) {
+          message.success("全部更新成功");
+        } else {
+          message.error(resp.errMsg);
+        }
       } catch (error) {
         console.log(error);
       }
@@ -252,6 +276,7 @@ export default {
         console.log(error);
       }
     };
+
     return {
       columns,
       showModal,
@@ -268,6 +293,7 @@ export default {
       update,
       handleChange,
       myInfoQuery,
+      updateAll,
     };
   },
 };

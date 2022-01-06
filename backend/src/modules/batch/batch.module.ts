@@ -4,7 +4,7 @@ import { BatchController } from './batch.controller';
 import { ArticlesModule } from '../articles/articles.module';
 
 @Module({
-  // imports: [ArticlesModule],
+  imports: [ArticlesModule],
   providers: [BatchService],
   controllers: [BatchController],
 })

@@ -2,7 +2,7 @@
  * @Author: along
  * @Date: 2021-11-02 00:12:55 
  * @Last Modified by: along
- * @Last Modified time: 2021-12-13 22:19:54
+ * @Last Modified time: 2022-01-06 23:07:37
  */
 
 import { Injectable, Logger } from "@nestjs/common";
@@ -149,6 +149,55 @@ export class ArticlesService {
             return data.length
         } catch (error) {
             return 0
+        }
+    }
+
+    async updateByTitle(article) {
+        // return "111"
+        try {
+            const options = { upsert: true, new: true, setDefaultsOnInsert: true };
+            const data = await this.articlesModel.findOneAndUpdate({
+                title: article.title
+            }, article, options
+            )
+            if (data) {
+                return {
+                    code: 0
+                }
+            } else {
+                return {
+                    code: 1,
+                    errMsg: '文章更新失败'
+                }
+            }
+        } catch (error) {
+            return {
+                code: 1,
+                errMsg: `文章更新失败: ${error}`
+            }
+        }
+    }
+
+
+    async updateAllByTitle(articles) {
+        // return "111"
+        try {
+            console.log('articles',articles.length);
+            articles.forEach(async article => {
+                const options = { upsert: true, new: true, setDefaultsOnInsert: true };
+                let res = await this.articlesModel.findOneAndUpdate({
+                    title: article.title
+                }, article, options
+                )
+            })
+            return {
+                code: 0
+            }
+        } catch (error) {
+            return {
+                code: 1,
+                errMsg: `文章更新失败: ${error}`
+            }
         }
     }
 }
