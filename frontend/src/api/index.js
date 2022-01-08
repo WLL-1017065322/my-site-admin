@@ -31,11 +31,9 @@ export const delType = (data) => del('/types', data)
 export const modifyType = (data) => put('/types', data)
 export const addType = (data) => post('/types', data)
 
-
 // 个人信息
 export const getMyInfo = (data) => get('/users/info', data)
 export const modifyMyInfo = (data) => put('/users/info', data)
-
 
 // 批量
 export const getBatch = (data) => get('/batch', data)
@@ -43,16 +41,9 @@ export const updateBatch = (data) => put('/batch', data)
 export const getBatchMyInfo = (data) => get('/batch/myinfo', data)
 export const updateBatchAll = (data) => put('/batch/all', data)
 
-
-
-
 // 系统信息
 export const getSysMsg = (data) => get('/info', data)
-
 export const putSysMsg = (data) => put('/info', data)
-
-
-
 export const login = (data) => post('/auth/login', data)
 
 
